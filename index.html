@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KD GOLDEN TRAVELS | Car, Flight, Hotel & Tour Booking</title>
+<meta name="description" content="KD Golden Travels - Car Booking, Flight Booking, Hotel Booking, Bus Booking and Tour Packages.">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f5f7fb;color:#172033}
+header{background:#07152d;color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 3px 18px #0003}
+.nav{max-width:1180px;margin:auto;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{font-size:22px;font-weight:900;white-space:nowrap}.logo b{color:#f5bd32}
+nav{display:flex;gap:18px;align-items:center}
+nav a{color:#fff;text-decoration:none;font-weight:700}
+.topbook{background:#f5bd32;color:#07152d!important;padding:10px 15px;border-radius:9px}
+.hero{min-height:570px;color:#fff;display:flex;align-items:center;background:linear-gradient(110deg,#06142ceb,#0b4e82c9),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85') center/cover}
+.wrap{max-width:1180px;margin:auto;padding:55px 18px;width:100%}
+.hero small{font-weight:800;letter-spacing:1px}.hero h1{font-size:clamp(42px,7vw,74px);line-height:.98;margin:15px 0}
+.hero p{font-size:20px;max-width:720px}.btn{display:inline-block;padding:14px 21px;border-radius:10px;text-decoration:none;font-weight:800;margin:8px 8px 0 0;border:0;cursor:pointer}
+.gold{background:#f5bd32;color:#07152d}.wa{background:#25d366;color:#fff}
+.booking{background:#eef5ff}
+.form{background:#fff;padding:25px;border-radius:20px;box-shadow:0 10px 35px #0002}
+.booking h2{margin-top:0}
+.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 14px}
+label{font-weight:700;display:block}
+input,select,textarea{width:100%;padding:13px;margin:6px 0 12px;border:1px solid #d5deeb;border-radius:9px;background:#fff;font-size:15px}
+input:focus,select:focus,textarea:focus{outline:2px solid #f5bd32;border-color:#f5bd32}
+.submit{width:100%;padding:15px;border:0;border-radius:9px;background:#f5bd32;color:#07152d;font-weight:900;font-size:16px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:#fff;padding:23px;border-radius:17px;box-shadow:0 6px 25px #0001;transition:.2s}.card:hover{transform:translateY(-3px)}
+.icon{font-size:40px}
+.section-title{text-align:center;margin-bottom:30px}.section-title h2{font-size:34px;margin-bottom:8px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{background:#fff;padding:22px;border-radius:15px;text-align:center}
+.contact{background:#07152d;color:#fff}.contact .wrap{text-align:center}
+footer{background:#030b18;color:#b9c5d8;text-align:center;padding:25px}
+#result{font-weight:800}
+#receiptLink{display:none}
+@media(max-width:800px){nav{display:none}.grid{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr}.hero{min-height:500px}}
+@media(max-width:520px){.fields,.grid{grid-template-columns:1fr}.wrap{padding:38px 15px}.hero h1{font-size:46px}}
+</style>
+</head>
+<body>
+
+<header>
+<div class="nav">
+<div class="logo">KD <b>GOLDEN</b> TRAVELS</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#booking" class="topbook">📅 Booking</a>
+<a href="#services">Services</a>
+<a href="#packages">Packages</a>
+<a href="#contact">Contact</a>
+<a href="admin.html">Admin</a>
+</nav>
+</div>
+</header>
+
+<section class="hero" id="home">
+<div class="wrap">
+<small>🌍 DOMESTIC & INTERNATIONAL TRAVEL</small>
+<h1>Your Journey,<br>Our Responsibility</h1>
+<p>Car Booking • Flight Booking • Hotel Booking • Bus Booking • Tour Packages</p>
+<a class="btn gold" href="#booking">🚗 Book Now</a>
+<a class="btn wa" href="https://wa.me/917222826299">💬 WhatsApp</a>
+</div>
+</section>
+
+<section class="booking" id="booking">
+<div class="wrap">
+<div class="section-title">
+<h2>📋 Online Booking</h2>
+<p>अपनी यात्रा की जानकारी भरें। Booking सीधे हमारे पास भेजें।</p>
+</div>
+
+<form class="form" id="bookingForm">
+<div class="fields">
+<div><label>Customer Name *</label><input id="name" required placeholder="अपना नाम"></div>
+<div><label>Mobile Number *</label><input id="mobile" required inputmode="numeric" maxlength="10" placeholder="10 अंकों का मोबाइल"></div>
+<div><label>From *</label><input id="from" required placeholder="कहाँ से"></div>
+<div><label>To *</label><input id="to" required placeholder="कहाँ जाना है"></div>
+<div><label>Travel Date *</label><input id="date" type="date" required></div>
+<div>
+<label>Booking Type *</label>
+<select id="service" required>
+<option value="Car Booking">🚗 Car Booking</option>
+<option value="Flight Booking">✈️ Flight Booking</option>
+<option value="Hotel Booking">🏨 Hotel Booking</option>
+<option value="Bus Booking">🚌 Bus Booking</option>
+<option value="Tour Package">🌍 Tour Package</option>
+</select>
+</div>
+</div>
+
+<div id="carFields">
+<div class="fields">
+<div>
+<label>Car Requirement</label>
+<select id="car">
+<option>Any Car</option>
+<option>Sedan</option>
+<option>SUV</option>
+<option>Innova / Crysta</option>
+<option>Tempo Traveller</option>
+</select>
+</div>
+<div>
+<label>Passengers</label>
+<input id="passengers" type="number" min="1" placeholder="कितने यात्री">
+</div>
+</div>
+</div>
+
+<label>Message / Special Requirement</label>
+<textarea id="message" rows="4" placeholder="जैसे: Pickup location, luggage, hotel requirement आदि"></textarea>
+
+<button class="submit" type="submit">📲 Submit Booking</button>
+<p id="result"></p>
+<a id="receiptLink" class="btn gold" href="#" target="_blank">🧾 View Booking Receipt</a>
+</form>
+</div>
+</section>
+
+<section id="services">
+<div class="wrap">
+<div class="section-title"><h2>Our Services</h2><p>आपकी यात्रा के लिए पूरी सुविधा एक ही जगह।</p></div>
+<div class="grid">
+<div class="card"><div class="icon">🚗</div><h3>Car Booking</h3><p>Local, outstation और airport travel के लिए car booking.</p><a class="btn gold" href="#booking">Book Car</a></div>
+<div class="card"><div class="icon">✈️</div><h3>Flight Booking</h3><p>Domestic & International flight enquiry.</p></div>
+<div class="card"><div class="icon">🏨</div><h3>Hotel Booking</h3><p>आपकी यात्रा के अनुसार hotel booking सहायता.</p></div>
+<div class="card"><div class="icon">🚌</div><h3>Bus Booking</h3><p>Bus यात्रा के लिए आसान online enquiry.</p></div>
+</div>
+</div>
+</section>
+
+<section id="packages">
+<div class="wrap">
+<div class="section-title"><h2>Popular Tour Packages</h2><p>Family और group के लिए यात्रा planning.</p></div>
+<div class="grid">
+<div class="card"><h3>🏔️ Himachal</h3><p>Shimla • Manali • Sightseeing</p></div>
+<div class="card"><h3>🛕 Char Dham</h3><p>Family & group yatra</p></div>
+<div class="card"><h3>🛕 Vaishno Devi</h3><p>Travel & stay planning</p></div>
+<div class="card"><h3>🌴 Kerala</h3><p>Stay • Cab • Sightseeing</p></div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<div class="section-title"><h2>Booking Process</h2></div>
+<div class="steps">
+<div class="step"><div class="icon">1️⃣</div><h3>Details भरें</h3><p>अपनी यात्रा और संपर्क जानकारी भरें।</p></div>
+<div class="step"><div class="icon">2️⃣</div><h3>Booking Submit</h3><p>Booking request हमें online प्राप्त होगी।</p></div>
+<div class="step"><div class="icon">3️⃣</div><h3>Confirmation</h3><p>हम आपसे संपर्क करके booking confirm करेंगे।</p></div>
+</div>
+</div>
+</section>
+
+<section class="contact" id="contact">
+<div class="wrap">
+<h2>KD GOLDEN TRAVELS</h2>
+<p>Your Journey, Our Responsibility</p>
+<p>📞 <strong>7222826299</strong></p>
+<a class="btn wa" href="https://wa.me/917222826299">💬 WhatsApp 7222826299</a>
+</div>
+</section>
+
+<footer>
+© 2026 KD GOLDEN TRAVELS •
+<a href="admin.html" style="color:#b9c5d8">Admin Login</a>
+</footer>
+
+<script>
+const API_URL="https://script.google.com/macros/s/AKfycbzW8Ns6d74iNImmvpd66hMntXbbd1sY8Rr-LH4zzPYiqaUXnXGK8KxgxnxnWud_n-L0/exec";
+
+document.getElementById("bookingForm").addEventListener("submit",async e=>{
+e.preventDefault();
+
+const v=id=>document.getElementById(id).value.trim();
+const b={
+name:v("name"),
+mobile:v("mobile"),
+from:v("from"),
+to:v("to"),
+date:v("date"),
+service:v("service"),
+car:v("car"),
+passengers:v("passengers"),
+message:v("message")
+};
+
+const result=document.getElementById("result");
+const receipt=document.getElementById("receiptLink");
+
+if(!/^[0-9]{10}$/.test(b.mobile)){
+result.textContent="कृपया 10 अंकों का सही मोबाइल नंबर डालें।";
+return;
+}
+
+result.textContent="⏳ Booking save हो रही है...";
+receipt.style.display="none";
+
+try{
+const url=API_URL+"?action=create&data="+encodeURIComponent(JSON.stringify(b));
+const resp=await fetch(url,{method:"GET",cache:"no-store"});
+const out=await resp.json();
+
+if(!out.success) throw new Error(out.message||"Booking save failed");
+
+const bookingId=out.bookingId;
+
+result.textContent="✅ Booking successfully save हो गई। Booking ID: "+bookingId;
+
+receipt.href="receipt.html?id="+encodeURIComponent(bookingId)
++"&name="+encodeURIComponent(b.name)
++"&mobile="+encodeURIComponent(b.mobile)
++"&from="+encodeURIComponent(b.from)
++"&to="+encodeURIComponent(b.to)
++"&date="+encodeURIComponent(b.date)
++"&service="+encodeURIComponent(b.service);
+
+receipt.style.display="inline-block";
+
+const text=
+"Hello KD Golden Travels,%0A"+
+"Booking ID: "+encodeURIComponent(bookingId)+"%0A"+
+"Name: "+encodeURIComponent(b.name)+"%0A"+
+"Mobile: "+encodeURIComponent(b.mobile)+"%0A"+
+"From: "+encodeURIComponent(b.from)+"%0A"+
+"To: "+encodeURIComponent(b.to)+"%0A"+
+"Date: "+encodeURIComponent(b.date)+"%0A"+
+"Service: "+encodeURIComponent(b.service)+"%0A"+
+"Car: "+encodeURIComponent(b.car)+"%0A"+
+"Passengers: "+encodeURIComponent(b.passengers)+"%0A"+
+"Message: "+encodeURIComponent(b.message);
+
+window.open("https://wa.me/917222826299?text="+text,"_blank");
+
+e.target.reset();
+}catch(err){
+result.textContent="❌ Booking save नहीं हुई: "+err.message;
+}
+});
+</script>
+</body>
+</html>
