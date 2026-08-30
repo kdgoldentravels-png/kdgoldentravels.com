@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KD GOLDEN TRAVELS - Admin</title><link rel="stylesheet" href="style.css"></head>
+<body class="adminbody"><div class="adminwrap">
+<div id="loginBox" class="card login"><h1>🔐 Admin Login</h1><input id="adminUser" placeholder="Username"><input id="adminPass" type="password" placeholder="Password"><button class="btn" onclick="login()">Login</button><p id="loginMsg"></p></div>
+<div id="panel" hidden><header class="adminhead"><h1>KD GOLDEN TRAVELS</h1><button class="btn small" onclick="logout()">Logout</button></header>
+<div class="stats"><div class="stat">Total <b id="total">0</b></div><div class="stat">New <b id="newCount">0</b></div><div class="stat">Confirmed <b id="confirmed">0</b></div><div class="stat">Completed <b id="completed">0</b></div></div>
+<section class="card"><h2>Tour Packages</h2><div class="form"><input id="pName" placeholder="Package Name"><input id="pPrice" placeholder="Price e.g. Starting ₹12,999"><input id="pImage" placeholder="Image URL"><textarea id="pDesc" placeholder="Description"></textarea><button class="btn" onclick="addPackage()">Add Package</button></div><div id="adminPackages"></div></section>
+<section class="card"><h2>Customer Bookings</h2><input id="search" placeholder="Search customer/mobile/service" oninput="renderBookings()"><div id="bookings"></div></section>
+</div></div><script src="admin.js"></script></body></html>
