@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KD Golden Travels Admin</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#eef3f8;color:#172033}
+.wrap{max-width:1050px;margin:auto;padding:20px}
+.box{background:#fff;padding:22px;border-radius:14px;box-shadow:0 5px 20px #0001;margin-bottom:18px}
+.login{max-width:380px;margin:10vh auto}
+input,select,button{width:100%;padding:12px;margin:6px 0;border:1px solid #d7deea;border-radius:8px;box-sizing:border-box}
+button{background:#f5bd32;border:0;font-weight:bold;cursor:pointer}
+.row{border-top:1px solid #ddd;padding:14px 0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:#fff;padding:18px;border-radius:12px}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="box login" id="loginBox">
+<h2>🔐 Admin Login</h2>
+<input id="user" placeholder="Username" autocomplete="username">
+<input id="pass" type="password" placeholder="Password" autocomplete="current-password">
+<button onclick="login()">Login</button>
+<p id="msg"></p>
+</div>
+
+<div id="panel" hidden>
+<div class="box">
+<h2>KD GOLDEN TRAVELS — Admin</h2>
+<button onclick="logout()">Logout</button>
+</div>
+
+<div class="stats">
+<div class="stat">Total<br><b id="total">0</b></div>
+<div class="stat">New<br><b id="newc">0</b></div>
+<div class="stat">Confirmed<br><b id="conf">0</b></div>
+<div class="stat">Completed<br><b id="done">0</b></div>
+</div>
+
+<div class="box">
+<h3>Online Bookings</h3>
+<input id="search" placeholder="Search customer / mobile / service" oninput="render()">
+<div id="list">Bookings load हो रही हैं...</div>
+</div>
+</div>
+</div>
+
+<script>
+const USER = "admin";
+const PASS = "12345";
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzW8Ns6d74iNImmvpd66hMntXbbd1sY8Rr-LH4zzPYiqaUXnXGK8KxgxnxnWud_n-L0/exec";
+
+function login(){
+  const u = document.getElementById("user").value.trim();
+  const p = document.getElementById("pass").value;
+
+  if(u === USER && p === PASS){
+    sessionStorage.setItem("kdAdmin","1");
+    show();
+  }else{
+    document.getElementById("msg").textContent =
+      "Wrong username or password.";
+  }
+}
+
+function logout(){
+  sessionStorage.removeItem("kdAdmin");
+  location.reload();
+}
+
+function show(){
+  document.getElementById("loginBox").hidden = true;
+  document.getElementById("panel").hidden = false;
+  render();
+}
+
+if(sessionStorage.getItem("kdAdmin") === "1") show();
+
+async function render(){
+  const list = document.getElementById("list");
+
+  if(!API_URL.startsWith("http")){
+    list.textContent = "API URL set करें।";
+    return;
+  }
+
+  try{
+    const r = await fetch(API_URL + "?action=list");
+    const data = await r.json();
+    const a = Array.isArray(data) ? data : (data.bookings || []);
+
+    const q = (document.getElementById("search").value || "").toLowerCase();
+
+    const x = a.filter(b =>
+      String(b.name || "").toLowerCase().includes(q) ||
+      String(b.mobile || "").toLowerCase().includes(q) ||
+      String(b.service || "").toLowerCase().includes(q)
+    );
+
+    list.innerHTML = x.map(b => `
+      <div class="row">
+        <b>${b.name || ""}</b> • ${b.mobile || ""}<br>
+        ${b.service || ""} | ${b.date || ""} | ${b.from || ""} → ${b.to || ""}<br>
+        ${b.message || ""}<br>
+        <a href="receipt.html?id=${encodeURIComponent(b.id || "")}&name=${encodeURIComponent(b.name || "")}&mobile=${encodeURIComponent(b.mobile || "")}&from=${encodeURIComponent(b.from || "")}&to=${encodeURIComponent(b.to || "")}&date=${encodeURIComponent(b.date || "")}&service=${encodeURIComponent(b.service || "")}" target="_blank">🧾 Receipt</a>
+        <br>Status: ${b.status || "New"}
+      </div>
+    `).join("") || "No bookings";
+
+    document.getElementById("total").textContent = a.length;
+    document.getElementById("newc").textContent =
+      a.filter(b => (b.status || "New") === "New").length;
+    document.getElementById("conf").textContent =
+      a.filter(b => b.status === "Confirmed").length;
+    document.getElementById("done").textContent =
+      a.filter(b => b.status === "Completed").length;
+
+  }catch(e){
+    list.textContent = "Database connection check करें।";
+    console.error(e);
+  }
+}
+</script>
+</body>
+</html>
