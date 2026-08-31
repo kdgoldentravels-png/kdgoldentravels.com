@@ -3,23 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KD GOLDEN TRAVELS</title>
 
-<title>KD GOLDEN TRAVELS | Online Booking</title>
-
-<link
-rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
 <style>
-
 *{box-sizing:border-box}
 
 html{scroll-behavior:smooth}
 
 body{
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:Arial,sans-serif;
   background:#f5f7fb;
   color:#172033;
 }
@@ -30,88 +26,63 @@ header{
   position:sticky;
   top:0;
   z-index:1000;
-  box-shadow:0 3px 18px #0003;
 }
 
 .nav{
-  max-width:1180px;
+  max-width:1150px;
   margin:auto;
-  padding:13px 18px;
+  padding:14px 18px;
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:20px;
+  align-items:center;
 }
 
 .logo{
   font-size:22px;
   font-weight:900;
-  white-space:nowrap;
 }
 
-.logo b{
-  color:#f5bd32;
-}
-
-nav{
-  display:flex;
-  gap:18px;
-  align-items:center;
-}
+.logo b{color:#f5bd32}
 
 nav a{
   color:#fff;
   text-decoration:none;
-  font-weight:700;
-}
-
-.topbook{
-  background:#f5bd32;
-  color:#07152d!important;
-  padding:10px 15px;
-  border-radius:9px;
+  margin-left:15px;
+  font-weight:bold;
 }
 
 .hero{
-  min-height:570px;
+  min-height:530px;
   color:#fff;
   display:flex;
   align-items:center;
   background:
-    linear-gradient(110deg,#06142ceb,#0b4e82c9),
-    url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85')
-    center/cover;
+  linear-gradient(110deg,#06142ceb,#0b4e82c9),
+  url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=85")
+  center/cover;
 }
 
 .wrap{
-  max-width:1180px;
+  max-width:1150px;
   margin:auto;
-  padding:55px 18px;
+  padding:50px 18px;
   width:100%;
 }
 
-.hero small{
-  font-weight:800;
-  letter-spacing:1px;
-}
-
 .hero h1{
-  font-size:clamp(42px,7vw,74px);
-  line-height:.98;
+  font-size:clamp(42px,7vw,72px);
+  line-height:1;
   margin:15px 0;
 }
 
-.hero p{
-  font-size:20px;
-  max-width:720px;
-}
+.hero p{font-size:19px}
 
 .btn{
   display:inline-block;
-  padding:14px 21px;
-  border-radius:10px;
+  padding:13px 20px;
+  border-radius:9px;
   text-decoration:none;
-  font-weight:800;
+  font-weight:bold;
   margin:8px 8px 0 0;
   border:0;
   cursor:pointer;
@@ -134,68 +105,75 @@ nav a{
 .form{
   background:#fff;
   padding:25px;
-  border-radius:20px;
-  box-shadow:0 10px 35px #0002;
+  border-radius:18px;
+  box-shadow:0 8px 30px #0001;
 }
 
 .fields{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:1fr 1fr;
   gap:8px 14px;
 }
 
 label{
-  font-weight:700;
   display:block;
+  font-weight:bold;
 }
 
-input,
-select,
-textarea{
+input,select,textarea{
   width:100%;
   padding:13px;
   margin:6px 0 12px;
-  border:1px solid #d5deeb;
-  border-radius:9px;
-  background:#fff;
+  border:1px solid #d7dfeb;
+  border-radius:8px;
   font-size:15px;
+  background:#fff;
 }
 
-input:focus,
-select:focus,
-textarea:focus{
-  outline:2px solid #f5bd32;
-  border-color:#f5bd32;
-}
-
-.submit{
+button.submit{
   width:100%;
   padding:15px;
   border:0;
   border-radius:9px;
   background:#f5bd32;
-  color:#07152d;
-  font-weight:900;
+  font-weight:bold;
   font-size:16px;
   cursor:pointer;
 }
 
 .mapbox{
-  margin-top:12px;
+  margin-top:8px;
   background:#fff;
+  border:1px solid #d9e1ec;
   padding:12px;
   border-radius:14px;
-  border:1px solid #dce4ef;
 }
 
 #map{
-  height:330px;
   width:100%;
+  height:350px;
   border-radius:10px;
-  overflow:hidden;
+  margin-top:10px;
 }
 
-.routeInfo{
+.map-tools{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:10px;
+}
+
+.map-tools button{
+  padding:12px;
+  border:0;
+  border-radius:8px;
+  background:#07152d;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.map-info{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
@@ -204,9 +182,9 @@ textarea:focus{
 
 .info{
   background:#f7f9fc;
-  border-radius:10px;
   padding:14px;
   text-align:center;
+  border-radius:10px;
 }
 
 .info b{
@@ -215,46 +193,63 @@ textarea:focus{
   margin-top:5px;
 }
 
+.route-title{
+  margin-top:15px;
+  font-weight:bold;
+}
+
+.route-card{
+  background:#fff;
+  border:2px solid #d8dee8;
+  padding:12px;
+  border-radius:10px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+.route-card.selected{
+  border-color:#f5bd32;
+  background:#fff9e8;
+}
+
+.route-card button{
+  margin-top:8px;
+  padding:9px 12px;
+  border:0;
+  border-radius:7px;
+  background:#f5bd32;
+  font-weight:bold;
+}
+
 .amountBox{
   margin-top:15px;
   padding:18px;
-  border-radius:14px;
   background:#fff8df;
   border:2px solid #f5bd32;
+  border-radius:14px;
   text-align:center;
 }
 
-.amountBox .title{
+.amountTitle{
   font-weight:bold;
-  font-size:15px;
 }
 
 .amount{
-  font-size:32px;
+  font-size:34px;
   font-weight:900;
   margin-top:5px;
-  color:#07152d;
 }
 
-.rate{
-  font-size:13px;
+.amountText{
+  margin-top:6px;
   color:#667085;
-  margin-top:5px;
+  font-size:14px;
 }
 
 .note{
-  font-size:13px;
+  margin-top:7px;
   color:#667085;
-  margin-top:8px;
-}
-
-#result{
-  font-weight:800;
-  margin-top:12px;
-}
-
-#receiptLink{
-  display:none;
+  font-size:12px;
 }
 
 .grid{
@@ -265,40 +260,18 @@ textarea:focus{
 
 .card{
   background:#fff;
-  padding:23px;
-  border-radius:17px;
-  box-shadow:0 6px 25px #0001;
+  padding:22px;
+  border-radius:16px;
+  box-shadow:0 5px 22px #0001;
 }
 
 .icon{
-  font-size:40px;
-}
-
-.section-title{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.steps{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
-
-.step{
-  background:#fff;
-  padding:22px;
-  border-radius:15px;
-  text-align:center;
+  font-size:38px;
 }
 
 .contact{
   background:#07152d;
   color:#fff;
-}
-
-.contact .wrap{
-  text-align:center;
 }
 
 footer{
@@ -308,70 +281,49 @@ footer{
   padding:25px;
 }
 
-.loading{
-  text-align:center;
-  padding:15px;
+#result{
+  font-weight:bold;
 }
 
-@media(max-width:800px){
+@media(max-width:750px){
 
-  nav{
-    display:none;
+  nav{display:none}
+
+  .fields{
+    grid-template-columns:1fr;
   }
 
   .grid{
     grid-template-columns:1fr 1fr;
   }
 
-  .steps{
-    grid-template-columns:1fr;
-  }
-
-  .hero{
-    min-height:500px;
-  }
-
-}
-
-@media(max-width:600px){
-
-  .fields{
-    grid-template-columns:1fr;
-  }
-
-  .routeInfo{
+  .map-info{
     grid-template-columns:1fr;
   }
 
 }
 
-@media(max-width:520px){
+@media(max-width:450px){
 
   .grid{
     grid-template-columns:1fr;
-  }
-
-  .wrap{
-    padding:38px 15px;
-  }
-
-  .hero h1{
-    font-size:46px;
   }
 
   #map{
     height:280px;
   }
 
-}
+  .map-tools{
+    grid-template-columns:1fr;
+  }
 
+}
 </style>
 </head>
 
 <body>
 
 <header>
-
 <div class="nav">
 
 <div class="logo">
@@ -379,43 +331,22 @@ KD <b>GOLDEN</b> TRAVELS
 </div>
 
 <nav>
-
 <a href="#home">Home</a>
-
-<a href="#booking" class="topbook">
-📅 Booking
-</a>
-
-<a href="#services">
-Services
-</a>
-
-<a href="#packages">
-Packages
-</a>
-
-<a href="#contact">
-Contact
-</a>
-
-<a href="admin.html">
-Admin
-</a>
-
+<a href="#booking">Booking</a>
+<a href="#services">Services</a>
+<a href="#packages">Packages</a>
+<a href="#contact">Contact</a>
+<a href="admin.html">Admin</a>
 </nav>
 
 </div>
-
 </header>
 
 
 <section class="hero" id="home">
-
 <div class="wrap">
 
-<small>
-🌍 DOMESTIC & INTERNATIONAL TRAVEL
-</small>
+<small>🌍 DOMESTIC & INTERNATIONAL TRAVEL</small>
 
 <h1>
 Your Journey,<br>
@@ -427,7 +358,7 @@ Car Booking • Flight Booking • Hotel Booking • Bus Booking • Tour Packag
 </p>
 
 <a class="btn gold" href="#booking">
-🚗 Book Now
+📅 Book Your Trip
 </a>
 
 <a class="btn wa" href="https://wa.me/917222826299">
@@ -435,25 +366,17 @@ Car Booking • Flight Booking • Hotel Booking • Bus Booking • Tour Packag
 </a>
 
 </div>
-
 </section>
 
 
 <section class="booking" id="booking">
-
 <div class="wrap">
 
-<div class="section-title">
-
-<h2>
-📋 Online Booking
-</h2>
+<h2>📋 Online Booking</h2>
 
 <p>
-अपनी यात्रा की जानकारी भरें — Distance और Estimated Amount अपने-आप दिखेगा।
+From और To डालें या Map पर manually point लगाएँ।
 </p>
-
-</div>
 
 
 <form class="form" id="bookingForm">
@@ -461,94 +384,51 @@ Car Booking • Flight Booking • Hotel Booking • Bus Booking • Tour Packag
 
 <div class="fields">
 
-
 <div>
-
-<label>
-Customer Name *
-</label>
-
-<input
-id="name"
-required
-placeholder="अपना नाम"
->
-
+<label>Customer Name *</label>
+<input id="name" required placeholder="अपना नाम">
 </div>
 
 
 <div>
-
-<label>
-Mobile Number *
-</label>
-
+<label>Mobile *</label>
 <input
 id="mobile"
 required
 inputmode="numeric"
 maxlength="10"
-placeholder="10 अंकों का मोबाइल"
->
-
+placeholder="10 अंकों का मोबाइल">
 </div>
 
 
 <div>
-
-<label>
-From *
-</label>
-
+<label>From *</label>
 <input
 id="from"
 required
-placeholder="कहाँ से"
->
-
+placeholder="जैसे Alwar">
 </div>
 
 
 <div>
-
-<label>
-To *
-</label>
-
+<label>To *</label>
 <input
 id="to"
 required
-placeholder="कहाँ जाना है"
->
-
+placeholder="जैसे Jaipur">
 </div>
 
 
 <div>
-
-<label>
-Travel Date *
-</label>
-
-<input
-id="date"
-type="date"
-required
->
-
+<label>Travel Date *</label>
+<input id="date" type="date" required>
 </div>
 
 
 <div>
+<label>Booking Type</label>
 
-<label>
-Booking Type *
-</label>
-
-<select
-id="service"
-required
->
+<select id="service">
 
 <option value="Car Booking">
 🚗 Car Booking
@@ -576,10 +456,25 @@ required
 
 
 <div>
+<label>Trip Type *</label>
 
-<label>
-Fuel Type *
-</label>
+<select id="tripType">
+
+<option value="oneway">
+➡️ One Way
+</option>
+
+<option value="round">
+🔄 Round Trip
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+<label>Fuel Type *</label>
 
 <select id="fuel">
 
@@ -597,45 +492,17 @@ Fuel Type *
 
 
 <div>
-
-<label>
-Passengers
-</label>
-
-<input
-id="passengers"
-type="number"
-min="1"
-value="1"
-placeholder="Passengers"
->
-
-</div>
-
-
-<div>
-
-<label>
-Car
-</label>
+<label>Car</label>
 
 <select id="car">
 
-<option value="">
-Select Car
-</option>
+<option value="">Select Car</option>
 
-<option value="Sedan">
-🚗 Sedan
-</option>
+<option value="Sedan">🚗 Sedan</option>
 
-<option value="SUV">
-🚙 SUV
-</option>
+<option value="SUV">🚙 SUV</option>
 
-<option value="Ertiga">
-🚐 Ertiga
-</option>
+<option value="Ertiga">🚐 Ertiga</option>
 
 <option value="Tempo Traveller">
 🚌 Tempo Traveller
@@ -646,6 +513,16 @@ Select Car
 </div>
 
 
+<div>
+<label>Passengers</label>
+
+<input
+id="passengers"
+type="number"
+min="1"
+value="1">
+</div>
+
 </div>
 
 
@@ -653,14 +530,33 @@ Select Car
 
 <div class="mapbox">
 
-<h3>
-🗺️ Route & Distance
-</h3>
+<h3>🗺️ Route Map</h3>
+
+<div class="map-tools">
+
+<button
+type="button"
+onclick="setManualFrom()">
+📍 From Map Point
+</button>
+
+<button
+type="button"
+onclick="setManualTo()">
+📍 To Map Point
+</button>
+
+</div>
+
+<p id="mapInstruction">
+Search location या Map पर point select करें।
+</p>
+
 
 <div id="map"></div>
 
 
-<div class="routeInfo">
+<div class="map-info">
 
 <div class="info">
 
@@ -686,7 +582,7 @@ Select Car
 
 <div class="info">
 
-💰 Rate
+💵 Rate
 
 <b id="rate">
 ₹12/KM
@@ -697,9 +593,18 @@ Select Car
 </div>
 
 
+<div class="route-title">
+🛣️ Available Routes
+</div>
+
+<div id="routeOptions">
+Route calculate होने के बाद यहाँ दिखाई देंगी।
+</div>
+
+
 <div class="amountBox">
 
-<div class="title">
+<div class="amountTitle">
 💰 Estimated Booking Amount
 </div>
 
@@ -707,12 +612,13 @@ Select Car
 ₹<span id="amount">0</span>
 </div>
 
-<div class="rate" id="amountText">
-Distance select करने पर amount दिखेगा।
+<div class="amountText" id="amountText">
+Distance calculate होने पर amount आएगा।
 </div>
 
 <div class="note">
-* यह estimated amount है। Toll, parking, night charges आदि अलग हो सकते हैं।
+50 KM तक minimum ₹1,500 • 100 KM तक minimum ₹2,000 •
+150–250 KM ₹3,000 • 250 KM से ऊपर per KM rate
 </div>
 
 </div>
@@ -720,21 +626,17 @@ Distance select करने पर amount दिखेगा।
 </div>
 
 
-<label>
-Message
-</label>
+<label>Message</label>
 
 <textarea
 id="message"
 rows="4"
-placeholder="कोई विशेष जानकारी"
-></textarea>
+placeholder="कोई विशेष जानकारी"></textarea>
 
 
 <button
 type="submit"
-class="submit"
->
+class="submit">
 📲 Submit Booking
 </button>
 
@@ -747,7 +649,7 @@ id="receiptLink"
 class="btn gold"
 href="#"
 target="_blank"
->
+style="display:none">
 🧾 View Booking Receipt
 </a>
 
@@ -755,7 +657,6 @@ target="_blank"
 </form>
 
 </div>
-
 </section>
 
 
@@ -763,80 +664,35 @@ target="_blank"
 
 <div class="wrap">
 
-<div class="section-title">
-
-<h2>
-Our Services
-</h2>
-
-</div>
-
+<h2>Our Services</h2>
 
 <div class="grid">
 
-
 <div class="card">
-
 <div class="icon">✈️</div>
-
-<h3>
-Flight Booking
-</h3>
-
-<p>
-Domestic & International flight enquiry.
-</p>
-
+<h3>Flight Booking</h3>
+<p>Domestic & International</p>
 </div>
 
-
 <div class="card">
-
 <div class="icon">🏨</div>
-
-<h3>
-Hotel Booking
-</h3>
-
-<p>
-आपकी यात्रा के अनुसार hotel booking सहायता.
-</p>
-
+<h3>Hotel Booking</h3>
+<p>Stay options for every trip</p>
 </div>
 
-
 <div class="card">
-
 <div class="icon">🚌</div>
-
-<h3>
-Bus Booking
-</h3>
-
-<p>
-Bus यात्रा के लिए आसान online enquiry.
-</p>
-
+<h3>Bus Booking</h3>
+<p>Easy travel enquiry</p>
 </div>
-
 
 <div class="card">
-
 <div class="icon">🚗</div>
-
-<h3>
-Car Booking
-</h3>
-
-<p>
-Local & outstation car booking.
-</p>
-
+<h3>Car Booking</h3>
+<p>Local & outstation</p>
 </div>
 
-
 </div>
-
 </div>
 
 </section>
@@ -846,126 +702,31 @@ Local & outstation car booking.
 
 <div class="wrap">
 
-<div class="section-title">
-
-<h2>
-Popular Tour Packages
-</h2>
-
-<p>
-Family और group के लिए यात्रा planning.
-</p>
-
-</div>
-
+<h2>Popular Tour Packages</h2>
 
 <div class="grid">
 
 <div class="card">
 <h3>🏔️ Himachal</h3>
-<p>
-Shimla • Manali • Sightseeing
-</p>
+<p>Shimla • Manali • Sightseeing</p>
 </div>
-
 
 <div class="card">
 <h3>🛕 Char Dham</h3>
-<p>
-Family & group yatra
-</p>
+<p>Family & group yatra</p>
 </div>
-
 
 <div class="card">
 <h3>🛕 Vaishno Devi</h3>
-<p>
-Travel & stay planning
-</p>
+<p>Travel & stay planning</p>
 </div>
-
 
 <div class="card">
 <h3>🌴 Kerala</h3>
-<p>
-Stay • Cab • Sightseeing
-</p>
+<p>Stay • Cab • Sightseeing</p>
 </div>
 
 </div>
-
-</div>
-
-</section>
-
-
-<section>
-
-<div class="wrap">
-
-<div class="section-title">
-
-<h2>
-Booking Process
-</h2>
-
-</div>
-
-
-<div class="steps">
-
-<div class="step">
-
-<div class="icon">
-1️⃣
-</div>
-
-<h3>
-Details भरें
-</h3>
-
-<p>
-अपनी यात्रा और संपर्क जानकारी भरें।
-</p>
-
-</div>
-
-
-<div class="step">
-
-<div class="icon">
-2️⃣
-</div>
-
-<h3>
-Booking Submit
-</h3>
-
-<p>
-Distance और estimated amount देखकर booking submit करें।
-</p>
-
-</div>
-
-
-<div class="step">
-
-<div class="icon">
-3️⃣
-</div>
-
-<h3>
-Confirmation
-</h3>
-
-<p>
-हम आपसे संपर्क करके booking confirm करेंगे।
-</p>
-
-</div>
-
-</div>
-
 </div>
 
 </section>
@@ -975,22 +736,15 @@ Confirmation
 
 <div class="wrap">
 
-<h2>
-KD GOLDEN TRAVELS
-</h2>
+<h2>KD GOLDEN TRAVELS</h2>
 
-<p>
-Your Journey, Our Responsibility
-</p>
+<p>Your Journey, Our Responsibility</p>
 
-<p>
-📞 <strong>7222826299</strong>
-</p>
+<p>📞 7222826299</p>
 
 <a
 class="btn wa"
-href="https://wa.me/917222826299"
->
+href="https://wa.me/917222826299">
 💬 WhatsApp 7222826299
 </a>
 
@@ -1002,11 +756,9 @@ href="https://wa.me/917222826299"
 <footer>
 
 © 2026 KD GOLDEN TRAVELS •
-
 <a
 href="admin.html"
-style="color:#b9c5d8"
->
+style="color:#b9c5d8">
 Admin Login
 </a>
 
@@ -1023,30 +775,35 @@ const API_URL =
 
 
 const CNG_RATE = 12;
-
 const PETROL_RATE = 18;
 
 
 let map;
+let fromMarker = null;
+let toMarker = null;
 
-let routeLine;
+let routeLayers = [];
 
-let fromMarker;
-
-let toMarker;
+let fromPoint = null;
+let toPoint = null;
 
 let currentDistance = 0;
-
 let currentTravelTime = "";
 
+let selectedRoute = 0;
 
-// ===============================
+let manualMode = null;
+
+let availableRoutes = [];
+
+
+// ==================================================
 // MAP
-// ===============================
+// ==================================================
 
 map = L.map("map").setView(
   [27.0238,77.1025],
-  6
+  7
 );
 
 
@@ -1059,9 +816,150 @@ L.tileLayer(
 ).addTo(map);
 
 
-// ===============================
+// ==================================================
+// MANUAL FROM
+// ==================================================
+
+function setManualFrom(){
+
+  manualMode = "from";
+
+  document.getElementById(
+    "mapInstruction"
+  ).textContent =
+    "📍 Map पर FROM location पर click करें।";
+
+}
+
+
+// ==================================================
+// MANUAL TO
+// ==================================================
+
+function setManualTo(){
+
+  manualMode = "to";
+
+  document.getElementById(
+    "mapInstruction"
+  ).textContent =
+    "📍 Map पर TO location पर click करें।";
+
+}
+
+
+// ==================================================
+// MAP CLICK
+// ==================================================
+
+map.on(
+  "click",
+  async function(e){
+
+    if(!manualMode){
+      return;
+    }
+
+
+    const lat =
+      e.latlng.lat;
+
+    const lon =
+      e.latlng.lng;
+
+
+    if(manualMode === "from"){
+
+      fromPoint = {
+        lat:lat,
+        lon:lon
+      };
+
+
+      if(fromMarker){
+        map.removeLayer(fromMarker);
+      }
+
+
+      fromMarker =
+        L.marker([
+          lat,
+          lon
+        ])
+        .addTo(map)
+        .bindPopup(
+          "📍 FROM"
+        )
+        .openPopup();
+
+
+      document.getElementById(
+        "from"
+      ).value =
+        "Map Selected";
+
+
+    }
+
+
+    if(manualMode === "to"){
+
+      toPoint = {
+        lat:lat,
+        lon:lon
+      };
+
+
+      if(toMarker){
+        map.removeLayer(toMarker);
+      }
+
+
+      toMarker =
+        L.marker([
+          lat,
+          lon
+        ])
+        .addTo(map)
+        .bindPopup(
+          "📍 TO"
+        )
+        .openPopup();
+
+
+      document.getElementById(
+        "to"
+      ).value =
+        "Map Selected";
+
+    }
+
+
+    manualMode = null;
+
+
+    document.getElementById(
+      "mapInstruction"
+    ).textContent =
+      "✅ Location selected.";
+
+
+    if(
+      fromPoint &&
+      toPoint
+    ){
+
+      calculateRoutes();
+
+    }
+
+  }
+);
+
+
+// ==================================================
 // GEOCODE
-// ===============================
+// ==================================================
 
 async function geocode(place){
 
@@ -1070,7 +968,9 @@ async function geocode(place){
     "?format=json" +
     "&limit=1" +
     "&q=" +
-    encodeURIComponent(place + ", India");
+    encodeURIComponent(
+      place + ", India"
+    );
 
 
   const response =
@@ -1078,10 +978,20 @@ async function geocode(place){
       url,
       {
         headers:{
-          "Accept":"application/json"
+          "Accept":
+          "application/json"
         }
       }
     );
+
+
+  if(!response.ok){
+
+    throw new Error(
+      "Location service error"
+    );
+
+  }
 
 
   const data =
@@ -1091,74 +1001,183 @@ async function geocode(place){
   if(!data.length){
 
     throw new Error(
-      "Location नहीं मिली: " + place
+      "Location नहीं मिली: " +
+      place
     );
 
   }
 
 
   return {
-    lat:parseFloat(data[0].lat),
-    lon:parseFloat(data[0].lon),
-    name:data[0].display_name
+
+    lat:
+      parseFloat(
+        data[0].lat
+      ),
+
+    lon:
+      parseFloat(
+        data[0].lon
+      )
+
   };
 
 }
 
 
-// ===============================
-// ROUTE
-// ===============================
+// ==================================================
+// SEARCH LOCATION
+// ==================================================
 
-async function calculateRoute(){
+async function searchLocations(){
 
   const from =
-    document.getElementById("from").value.trim();
+    document.getElementById(
+      "from"
+    ).value.trim();
+
 
   const to =
-    document.getElementById("to").value.trim();
+    document.getElementById(
+      "to"
+    ).value.trim();
 
 
-  if(!from || !to){
+  if(
+    !from ||
+    !to ||
+    from === "Map Selected" ||
+    to === "Map Selected"
+  ){
 
     return;
 
   }
 
 
-  const distanceEl =
-    document.getElementById("distance");
+  try{
 
-  const timeEl =
-    document.getElementById("travelTime");
+    document.getElementById(
+      "mapInstruction"
+    ).textContent =
+      "⏳ Location और route calculate हो रहा है...";
 
 
-  distanceEl.textContent =
-    "Loading...";
+    fromPoint =
+      await geocode(from);
 
-  timeEl.textContent =
-    "Loading...";
+
+    toPoint =
+      await geocode(to);
+
+
+    if(fromMarker){
+      map.removeLayer(
+        fromMarker
+      );
+    }
+
+
+    if(toMarker){
+      map.removeLayer(
+        toMarker
+      );
+    }
+
+
+    fromMarker =
+      L.marker([
+        fromPoint.lat,
+        fromPoint.lon
+      ])
+      .addTo(map)
+      .bindPopup(
+        "📍 FROM: " + from
+      );
+
+
+    toMarker =
+      L.marker([
+        toPoint.lat,
+        toPoint.lon
+      ])
+      .addTo(map)
+      .bindPopup(
+        "📍 TO: " + to
+      );
+
+
+    calculateRoutes();
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    document.getElementById(
+      "mapInstruction"
+    ).textContent =
+      "❌ " + error.message;
+
+  }
+
+}
+
+
+// ==================================================
+// CALCULATE MULTIPLE ROUTES
+// ==================================================
+
+async function calculateRoutes(){
+
+  if(
+    !fromPoint ||
+    !toPoint
+  ){
+
+    return;
+
+  }
 
 
   try{
 
-    const start =
-      await geocode(from);
+    document.getElementById(
+      "mapInstruction"
+    ).textContent =
+      "⏳ Multiple routes खोजी जा रही हैं...";
 
-    const end =
-      await geocode(to);
 
-
-    const routeUrl =
+    const url =
       "https://router.project-osrm.org/route/v1/driving/" +
-      start.lon + "," + start.lat +
+
+      fromPoint.lon +
+      "," +
+      fromPoint.lat +
+
       ";" +
-      end.lon + "," + end.lat +
-      "?overview=full&geometries=geojson";
+
+      toPoint.lon +
+      "," +
+      toPoint.lat +
+
+      "?alternatives=true" +
+      "&overview=full" +
+      "&geometries=geojson";
 
 
     const response =
-      await fetch(routeUrl);
+      await fetch(url);
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Route server error"
+      );
+
+    }
 
 
     const data =
@@ -1177,131 +1196,189 @@ async function calculateRoute(){
     }
 
 
-    const route =
-      data.routes[0];
+    availableRoutes =
+      data.routes;
 
 
-    currentDistance =
-      route.distance / 1000;
+    routeLayers.forEach(
+      function(layer){
 
+        map.removeLayer(
+          layer
+        );
 
-    currentTravelTime =
-      formatTravelTime(
-        route.duration
-      );
-
-
-    distanceEl.textContent =
-      currentDistance.toFixed(1) +
-      " KM";
-
-
-    timeEl.textContent =
-      currentTravelTime;
-
-
-    if(routeLine){
-
-      map.removeLayer(
-        routeLine
-      );
-
-    }
-
-
-    if(fromMarker){
-
-      map.removeLayer(
-        fromMarker
-      );
-
-    }
-
-
-    if(toMarker){
-
-      map.removeLayer(
-        toMarker
-      );
-
-    }
-
-
-    const coordinates =
-      route.geometry.coordinates.map(
-        function(c){
-
-          return [
-            c[1],
-            c[0]
-          ];
-
-        }
-      );
-
-
-    routeLine =
-      L.polyline(
-        coordinates,
-        {
-          weight:5
-        }
-      ).addTo(map);
-
-
-    fromMarker =
-      L.marker([
-        start.lat,
-        start.lon
-      ])
-      .addTo(map)
-      .bindPopup(
-        "📍 From: " + from
-      );
-
-
-    toMarker =
-      L.marker([
-        end.lat,
-        end.lon
-      ])
-      .addTo(map)
-      .bindPopup(
-        "📍 To: " + to
-      );
-
-
-    map.fitBounds(
-      routeLine.getBounds(),
-      {
-        padding:[20,20]
       }
     );
 
 
-    calculateAmount();
+    routeLayers = [];
+
+
+    const routeOptions =
+      document.getElementById(
+        "routeOptions"
+      );
+
+
+    routeOptions.innerHTML =
+      "";
+
+
+    data.routes.forEach(
+      function(route,index){
+
+        const km =
+          route.distance / 1000;
+
+
+        const time =
+          formatTime(
+            route.duration
+          );
+
+
+        const coords =
+          route.geometry.coordinates.map(
+            function(c){
+
+              return [
+                c[1],
+                c[0]
+              ];
+
+            }
+          );
+
+
+        const line =
+          L.polyline(
+            coords,
+            {
+              weight:
+                index === 0
+                  ? 8
+                  : 5,
+
+              opacity:
+                index === 0
+                  ? 1
+                  : .45
+            }
+          ).addTo(map);
+
+
+        routeLayers.push(
+          line
+        );
+
+
+        line.on(
+          "click",
+          function(){
+
+            selectRoute(
+              index
+            );
+
+          }
+        );
+
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+
+        card.className =
+          "route-card" +
+          (
+            index === 0
+              ? " selected"
+              : ""
+          );
+
+
+        card.innerHTML =
+
+          "<b>🛣️ Route " +
+          (index + 1) +
+          "</b><br>" +
+
+          "📍 " +
+          km.toFixed(1) +
+          " KM" +
+
+          " &nbsp; | &nbsp; " +
+
+          "⏱️ " +
+          time +
+
+          "<br>" +
+
+          "<button type='button'>" +
+          "Select Route" +
+          "</button>";
+
+
+        card.onclick =
+          function(){
+
+            selectRoute(
+              index
+            );
+
+          };
+
+
+        routeOptions.appendChild(
+          card
+        );
+
+      }
+    );
+
+
+    map.fitBounds(
+      L.latLngBounds(
+        [
+          [
+            fromPoint.lat,
+            fromPoint.lon
+          ],
+
+          [
+            toPoint.lat,
+            toPoint.lon
+          ]
+        ]
+      ),
+      {
+        padding:[
+          25,
+          25
+        ]
+      }
+    );
+
+
+    document.getElementById(
+      "mapInstruction"
+    ).textContent =
+      "✅ Route तैयार है। Route select करें।";
+
+
+    selectRoute(0);
 
 
   }catch(error){
 
     console.error(error);
 
-    currentDistance = 0;
-
-    distanceEl.textContent =
-      "Location नहीं मिली";
-
-    timeEl.textContent =
-      "--";
-
     document.getElementById(
-      "amount"
+      "mapInstruction"
     ).textContent =
-      "0";
-
-    document.getElementById(
-      "amountText"
-    ).textContent =
+      "❌ " +
       error.message;
 
   }
@@ -1309,11 +1386,102 @@ async function calculateRoute(){
 }
 
 
-// ===============================
-// TIME
-// ===============================
+// ==================================================
+// SELECT ROUTE
+// ==================================================
 
-function formatTravelTime(seconds){
+function selectRoute(index){
+
+  if(
+    !availableRoutes[index]
+  ){
+
+    return;
+
+  }
+
+
+  selectedRoute =
+    index;
+
+
+  const route =
+    availableRoutes[index];
+
+
+  currentDistance =
+    route.distance /
+    1000;
+
+
+  currentTravelTime =
+    formatTime(
+      route.duration
+    );
+
+
+  routeLayers.forEach(
+    function(layer,i){
+
+      layer.setStyle({
+
+        weight:
+          i === index
+            ? 8
+            : 4,
+
+        opacity:
+          i === index
+            ? 1
+            : .35
+
+      });
+
+    }
+  );
+
+
+  const cards =
+    document.querySelectorAll(
+      ".route-card"
+    );
+
+
+  cards.forEach(
+    function(card,i){
+
+      card.classList.toggle(
+        "selected",
+        i === index
+      );
+
+    }
+  );
+
+
+  document.getElementById(
+    "distance"
+  ).textContent =
+    currentDistance.toFixed(1) +
+    " KM";
+
+
+  document.getElementById(
+    "travelTime"
+  ).textContent =
+    currentTravelTime;
+
+
+  calculateAmount();
+
+}
+
+
+// ==================================================
+// TIME
+// ==================================================
+
+function formatTime(seconds){
 
   const minutes =
     Math.round(
@@ -1343,17 +1511,15 @@ function formatTravelTime(seconds){
   }
 
 
-  return (
-    mins +
-    " मिनट"
-  );
+  return mins +
+    " मिनट";
 
 }
 
 
-// ===============================
-// AMOUNT
-// ===============================
+// ==================================================
+// FARE CALCULATION
+// ==================================================
 
 function calculateAmount(){
 
@@ -1363,40 +1529,98 @@ function calculateAmount(){
     ).value;
 
 
+  const tripType =
+    document.getElementById(
+      "tripType"
+    ).value;
+
+
   const rate =
     fuel === "CNG"
       ? CNG_RATE
       : PETROL_RATE;
 
 
-  document.getElementById(
-    "rate"
-  ).textContent =
-    "₹" + rate + "/KM";
+  let baseAmount = 0;
 
 
-  if(!currentDistance){
+  /*
+    आपके fare rules:
 
-    document.getElementById(
-      "amount"
-    ).textContent =
-      "0";
+    0–50 KM       = ₹1500 minimum
 
-    return;
+    50–100 KM     = ₹2000 minimum
+
+    100–150 KM    = ₹2000 minimum
+
+    150–250 KM    = ₹3000
+
+    250 KM से ऊपर = KM × rate
+  */
+
+
+  if(currentDistance <= 50){
+
+    baseAmount = 1500;
+
+  }
+
+  else if(currentDistance <= 100){
+
+    baseAmount = 2000;
+
+  }
+
+  else if(currentDistance < 150){
+
+    baseAmount = 2000;
+
+  }
+
+  else if(currentDistance <= 250){
+
+    baseAmount = 3000;
+
+  }
+
+  else{
+
+    baseAmount =
+      currentDistance *
+      rate;
 
   }
 
 
-  const amount =
-    Math.round(
-      currentDistance * rate
-    );
+  let finalAmount =
+    baseAmount;
+
+
+  // ROUND TRIP
+  if(
+    tripType === "round"
+  ){
+
+    finalAmount =
+      baseAmount * 2;
+
+  }
+
+
+  document.getElementById(
+    "rate"
+  ).textContent =
+    "₹" +
+    rate +
+    "/KM";
 
 
   document.getElementById(
     "amount"
   ).textContent =
-    amount.toLocaleString(
+    Math.round(
+      finalAmount
+    ).toLocaleString(
       "en-IN"
     );
 
@@ -1404,69 +1628,38 @@ function calculateAmount(){
   document.getElementById(
     "amountText"
   ).textContent =
+
+    (
+      tripType === "round"
+        ? "🔄 Round Trip"
+        : "➡️ One Way"
+    ) +
+
+    " • " +
+
     currentDistance.toFixed(1) +
-    " KM × ₹" +
-    rate +
-    " = ₹" +
-    amount.toLocaleString(
+    " KM" +
+
+    " • ₹" +
+
+    Math.round(
+      finalAmount
+    ).toLocaleString(
       "en-IN"
     );
 
 }
 
 
-// ===============================
-// ROUTE BUTTON EVENTS
-// ===============================
-
-let routeTimer;
-
-
-document.getElementById(
-  "from"
-).addEventListener(
-  "change",
-  function(){
-
-    clearTimeout(
-      routeTimer
-    );
-
-    routeTimer =
-      setTimeout(
-        calculateRoute,
-        500
-      );
-
-  }
-);
-
-
-document.getElementById(
-  "to"
-).addEventListener(
-  "change",
-  function(){
-
-    clearTimeout(
-      routeTimer
-    );
-
-    routeTimer =
-      setTimeout(
-        calculateRoute,
-        500
-      );
-
-  }
-);
-
+// ==================================================
+// INPUT EVENTS
+// ==================================================
 
 document.getElementById(
   "from"
 ).addEventListener(
   "blur",
-  calculateRoute
+  searchLocations
 );
 
 
@@ -1474,7 +1667,7 @@ document.getElementById(
   "to"
 ).addEventListener(
   "blur",
-  calculateRoute
+  searchLocations
 );
 
 
@@ -1486,9 +1679,17 @@ document.getElementById(
 );
 
 
-// ===============================
+document.getElementById(
+  "tripType"
+).addEventListener(
+  "change",
+  calculateAmount
+);
+
+
+// ==================================================
 // BOOKING SUBMIT
-// ===============================
+// ==================================================
 
 document.getElementById(
   "bookingForm"
@@ -1499,7 +1700,7 @@ document.getElementById(
     e.preventDefault();
 
 
-    const value =
+    const val =
       id =>
       document
         .getElementById(id)
@@ -1508,7 +1709,7 @@ document.getElementById(
 
 
     const fuel =
-      value("fuel");
+      val("fuel");
 
 
     const rate =
@@ -1517,32 +1718,88 @@ document.getElementById(
         : PETROL_RATE;
 
 
-    const amount =
-      currentDistance
-        ? Math.round(
-            currentDistance *
-            rate
-          )
-        : 0;
+    const tripType =
+      val("tripType");
+
+
+    let baseAmount = 0;
+
+
+    if(currentDistance <= 50){
+
+      baseAmount = 1500;
+
+    }
+
+    else if(currentDistance <= 100){
+
+      baseAmount = 2000;
+
+    }
+
+    else if(currentDistance < 150){
+
+      baseAmount = 2000;
+
+    }
+
+    else if(currentDistance <= 250){
+
+      baseAmount = 3000;
+
+    }
+
+    else{
+
+      baseAmount =
+        currentDistance *
+        rate;
+
+    }
+
+
+    let finalAmount =
+      baseAmount;
+
+
+    if(
+      tripType === "round"
+    ){
+
+      finalAmount =
+        baseAmount * 2;
+
+    }
 
 
     const booking = {
 
-      name:value("name"),
+      name:
+        val("name"),
 
-      mobile:value("mobile"),
+      mobile:
+        val("mobile"),
 
-      from:value("from"),
+      from:
+        val("from"),
 
-      to:value("to"),
+      to:
+        val("to"),
 
-      date:value("date"),
+      date:
+        val("date"),
 
-      service:value("service"),
+      service:
+        val("service"),
 
-      fuel:fuel,
+      tripType:
+        tripType,
 
-      rate:rate,
+      fuel:
+        fuel,
+
+      rate:
+        rate,
 
       distance:
         currentDistance
@@ -1552,13 +1809,22 @@ document.getElementById(
       travelTime:
         currentTravelTime,
 
-      amount:amount,
+      amount:
+        Math.round(
+          finalAmount
+        ),
 
-      car:value("car"),
+      car:
+        val("car"),
 
-      passengers:value("passengers"),
+      passengers:
+        val("passengers"),
 
-      message:value("message")
+      message:
+        val("message"),
+
+      routeNumber:
+        selectedRoute + 1
 
     };
 
@@ -1582,7 +1848,7 @@ document.getElementById(
     ){
 
       result.textContent =
-        "कृपया 10 अंकों का सही मोबाइल नंबर डालें।";
+        "❌ कृपया 10 अंकों का सही मोबाइल नंबर डालें।";
 
       return;
 
@@ -1595,7 +1861,7 @@ document.getElementById(
     ){
 
       result.textContent =
-        "From और To भरना जरूरी है।";
+        "❌ From और To भरना जरूरी है।";
 
       return;
 
@@ -1605,9 +1871,9 @@ document.getElementById(
     if(!currentDistance){
 
       result.textContent =
-        "पहले From और To की दूरी calculate होने दें।";
+        "⏳ पहले route calculate होने दें।";
 
-      calculateRoute();
+      calculateRoutes();
 
       return;
 
@@ -1616,10 +1882,6 @@ document.getElementById(
 
     result.textContent =
       "⏳ Booking save हो रही है...";
-
-
-    receipt.style.display =
-      "none";
 
 
     try{
@@ -1667,6 +1929,10 @@ document.getElementById(
         bookingId;
 
 
+      // ==========================================
+      // RECEIPT
+      // ==========================================
+
       receipt.href =
         "receipt.html" +
 
@@ -1705,6 +1971,11 @@ document.getElementById(
           booking.service
         ) +
 
+        "&tripType=" +
+        encodeURIComponent(
+          booking.tripType
+        ) +
+
         "&fuel=" +
         encodeURIComponent(
           booking.fuel
@@ -1720,63 +1991,78 @@ document.getElementById(
           booking.travelTime
         ) +
 
+        "&rate=" +
+        encodeURIComponent(
+          booking.rate
+        ) +
+
         "&amount=" +
         encodeURIComponent(
           booking.amount
-        );
+        ) +
+
+        "&car=" +
+        encodeURIComponent(
+          booking.car
+        ) +
+
+        "&passengers=" +
+        encodeURIComponent(
+          booking.passengers
+        ) +
+
+        "&message=" +
+        encodeURIComponent(
+          booking.message
+        ) +
+
+        "&status=New";
 
 
       receipt.style.display =
         "inline-block";
 
 
+      // ==========================================
+      // WHATSAPP
+      // ==========================================
+
       const whatsappText =
-        "Hello KD Golden Travels\n\n" +
 
-        "Booking ID: " +
-        bookingId +
+`KD GOLDEN TRAVELS BOOKING
 
-        "\nName: " +
-        booking.name +
+Booking ID: ${bookingId}
 
-        "\nMobile: " +
-        booking.mobile +
+Customer: ${booking.name}
 
-        "\nFrom: " +
-        booking.from +
+Mobile: ${booking.mobile}
 
-        "\nTo: " +
-        booking.to +
+Service: ${booking.service}
 
-        "\nDate: " +
-        booking.date +
+Trip: ${booking.tripType === "round" ? "Round Trip" : "One Way"}
 
-        "\nService: " +
-        booking.service +
+From: ${booking.from}
 
-        "\nFuel: " +
-        booking.fuel +
+To: ${booking.to}
 
-        "\nDistance: " +
-        booking.distance +
-        " KM" +
+Travel Date: ${booking.date}
 
-        "\nTravel Time: " +
-        booking.travelTime +
+Distance: ${booking.distance} KM
 
-        "\nEstimated Amount: ₹" +
-        booking.amount.toLocaleString(
-          "en-IN"
-        ) +
+Travel Time: ${booking.travelTime}
 
-        "\nCar: " +
-        booking.car +
+Fuel: ${booking.fuel}
 
-        "\nPassengers: " +
-        booking.passengers +
+Rate: ₹${booking.rate}/KM
 
-        "\nMessage: " +
-        booking.message;
+Estimated Amount: ₹${booking.amount.toLocaleString("en-IN")}
+
+Car: ${booking.car}
+
+Passengers: ${booking.passengers}
+
+KD GOLDEN TRAVELS
+7222826299`;
 
 
       window.open(
@@ -1787,6 +2073,8 @@ document.getElementById(
         "_blank"
       );
 
+
+      // RESET
 
       document
         .getElementById(
@@ -1799,20 +2087,35 @@ document.getElementById(
 
       currentTravelTime = "";
 
+      fromPoint = null;
+
+      toPoint = null;
+
+      availableRoutes = [];
+
+
       document.getElementById(
         "distance"
       ).textContent =
         "-- KM";
+
 
       document.getElementById(
         "travelTime"
       ).textContent =
         "--";
 
+
       document.getElementById(
         "amount"
       ).textContent =
         "0";
+
+
+      document.getElementById(
+        "routeOptions"
+      ).innerHTML =
+        "नई booking के लिए route calculate करें।";
 
 
     }catch(error){
