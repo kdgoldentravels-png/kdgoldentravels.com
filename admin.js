@@ -2,113 +2,200 @@ const ADMIN_USER = "admin";
 const ADMIN_PASS = "12345";
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbzW8Ns6d74iNImmvpd66hMntXbbd1sY8Rr-LH4zzPYiqaUXnXGK8KxgxnxnWud_n-L0/exec";
+  "https://script.google.com/macros/s/AKfycbzW8Ns6d74iNImmvpd66hMntXbbd1sY8Rr-LH4zzPYiqaUXnXGK8KxgxnxnWud_n-L0/exec";
 
 let allBookings = [];
 
-function login(){
-  const u = document.getElementById("adminUser").value.trim();
-  const p = document.getElementById("adminPass").value;
 
-  if(u === ADMIN_USER && p === ADMIN_PASS){
+// ===============================
+// ADMIN LOGIN
+// ===============================
+function login() {
+
+  const username =
+    document.getElementById("adminUser").value.trim();
+
+  const password =
+    document.getElementById("adminPass").value;
+
+  if (
+    username === ADMIN_USER &&
+    password === ADMIN_PASS
+  ) {
+
     sessionStorage.kdAdmin = "1";
+
     showPanel();
-  }else{
+
+  } else {
+
     document.getElementById("loginMsg").textContent =
       "Wrong username or password.";
+
   }
 }
 
-function logout(){
+
+// ===============================
+// LOGOUT
+// ===============================
+function logout() {
+
   sessionStorage.removeItem("kdAdmin");
+
   location.reload();
+
 }
 
-function showPanel(){
+
+// ===============================
+// SHOW ADMIN PANEL
+// ===============================
+function showPanel() {
+
   document.getElementById("loginBox").hidden = true;
+
   document.getElementById("panel").hidden = false;
+
   renderAll();
+
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
-  if(sessionStorage.kdAdmin === "1"){
-    showPanel();
+
+// ===============================
+// CHECK LOGIN
+// ===============================
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
+
+    if (sessionStorage.kdAdmin === "1") {
+
+      showPanel();
+
+    }
+
   }
-});
+);
 
-function esc(x){
-  return String(x ?? "").replace(/[&<>"']/g,m=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  }[m]));
+
+// ===============================
+// ESCAPE HTML
+// ===============================
+function esc(value) {
+
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    function (m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+
+      }[m];
+
+    }
+  );
+
 }
 
 
-// ==============================
-// LOAD ONLINE BOOKINGS
-// ==============================
-async function bookings(){
+// ===============================
+// LOAD BOOKINGS FROM GOOGLE SHEET
+// ===============================
+async function loadBookings() {
 
-  try{
+  try {
 
     const response = await fetch(
-      API_URL + "?action=list&t=" + Date.now(),
-      {cache:"no-store"}
+      API_URL +
+      "?action=list&t=" +
+      Date.now(),
+      {
+        method: "GET",
+        cache: "no-store"
+      }
     );
 
     const data = await response.json();
 
-    if(!Array.isArray(data)){
+    if (!Array.isArray(data)) {
+
+      allBookings = [];
+
       return [];
+
     }
 
     allBookings = data;
 
     return data;
 
-  }catch(error){
+  } catch (error) {
 
     console.error(error);
 
-    document.getElementById("bookings").innerHTML =
-      "<p>❌ Online database connection error.</p>";
+    allBookings = [];
 
     return [];
+
   }
+
 }
 
 
-// ==============================
+// ===============================
 // RENDER BOOKINGS
-// ==============================
-async function renderBookings(){
+// ===============================
+async function renderBookings() {
 
-  const list = document.getElementById("bookings");
+  const list =
+    document.getElementById("bookings");
+
+  if (!list) return;
 
   list.innerHTML =
     "<p>⏳ Bookings loading...</p>";
 
-  const data = await bookings();
+  const data =
+    await loadBookings();
 
-  const searchBox = document.getElementById("search");
+  const searchBox =
+    document.getElementById("search");
 
-  const q = searchBox
-    ? searchBox.value.toLowerCase().trim()
-    : "";
+  const query =
+    searchBox
+      ? searchBox.value.toLowerCase().trim()
+      : "";
 
-  const filtered = data.filter(x => {
 
-    const text =
-      `${x.name || ""} ${x.mobile || ""} ${x.service || ""} ${x.id || ""}`
-      .toLowerCase();
+  const filtered =
+    data.filter(function (booking) {
 
-    return text.includes(q);
-  });
+      const text =
+        (
+          (booking.id || "") +
+          " " +
+          (booking.name || "") +
+          " " +
+          (booking.mobile || "") +
+          " " +
+          (booking.service || "") +
+          " " +
+          (booking.from || "") +
+          " " +
+          (booking.to || "")
+        ).toLowerCase();
 
-  if(!filtered.length){
+      return text.includes(query);
+
+    });
+
+
+  if (!filtered.length) {
 
     list.innerHTML =
       "<p>📭 No bookings found.</p>";
@@ -116,342 +203,602 @@ async function renderBookings(){
     updateCounters(data);
 
     return;
+
   }
 
-  list.innerHTML = filtered.map(x => {
 
-    const statusValue = x.status || "New";
+  list.innerHTML =
+    filtered.map(function (booking) {
 
-    const receipt =
-      "receipt.html?" +
-      "id=" + encodeURIComponent(x.id || "") +
-      "&name=" + encodeURIComponent(x.name || "") +
-      "&mobile=" + encodeURIComponent(x.mobile || "") +
-      "&from=" + encodeURIComponent(x.from || "") +
-      "&to=" + encodeURIComponent(x.to || "") +
-      "&date=" + encodeURIComponent(x.date || "") +
-      "&service=" + encodeURIComponent(x.service || "");
+      const status =
+        booking.status || "New";
 
-    const waText =
-      `KD GOLDEN TRAVELS BOOKING%0A` +
-      `Booking ID: ${encodeURIComponent(x.id || "")}%0A` +
-      `Name: ${encodeURIComponent(x.name || "")}%0A` +
-      `Service: ${encodeURIComponent(x.service || "")}%0A` +
-      `From: ${encodeURIComponent(x.from || "")}%0A` +
-      `To: ${encodeURIComponent(x.to || "")}`;
 
-    return `
-      <div class="adminrow">
+      const receiptUrl =
+        "receipt.html?" +
+        "id=" +
+        encodeURIComponent(
+          booking.id || ""
+        ) +
+        "&name=" +
+        encodeURIComponent(
+          booking.name || ""
+        ) +
+        "&mobile=" +
+        encodeURIComponent(
+          booking.mobile || ""
+        ) +
+        "&from=" +
+        encodeURIComponent(
+          booking.from || ""
+        ) +
+        "&to=" +
+        encodeURIComponent(
+          booking.to || ""
+        ) +
+        "&date=" +
+        encodeURIComponent(
+          booking.date || ""
+        ) +
+        "&service=" +
+        encodeURIComponent(
+          booking.service || ""
+        );
 
-        <b>👤 ${esc(x.name)}</b>
-        • ${esc(x.mobile)}
 
-        <br>
+      const whatsappText =
+        "KD GOLDEN TRAVELS BOOKING\n\n" +
+        "Booking ID: " +
+        (booking.id || "") +
+        "\nName: " +
+        (booking.name || "") +
+        "\nMobile: " +
+        (booking.mobile || "") +
+        "\nService: " +
+        (booking.service || "") +
+        "\nFrom: " +
+        (booking.from || "") +
+        "\nTo: " +
+        (booking.to || "") +
+        "\nTravel Date: " +
+        (booking.date || "") +
+        "\nStatus: " +
+        status;
 
-        🆔 Booking ID:
-        <b>${esc(x.id)}</b>
 
-        <br>
+      const whatsappUrl =
+        "https://wa.me/91" +
+        encodeURIComponent(
+          String(booking.mobile || "")
+            .replace(/\D/g, "")
+        ) +
+        "?text=" +
+        encodeURIComponent(
+          whatsappText
+        );
 
-        🚗 ${esc(x.service)}
 
-        | 📅 ${esc(x.date)}
+      return `
+        <div class="adminrow">
 
-        <br>
+          <b>
+            👤 ${esc(booking.name)}
+          </b>
 
-        📍 ${esc(x.from)}
-        →
-        ${esc(x.to)}
+          • ${esc(booking.mobile)}
 
-        <br>
+          <br>
 
-        ${x.car ? "🚘 Car: " + esc(x.car) + "<br>" : ""}
+          🆔 Booking ID:
+          <b>${esc(booking.id)}</b>
 
-        ${x.passengers
-          ? "👥 Passengers: " + esc(x.passengers) + "<br>"
-          : ""}
+          <br>
 
-        ${x.message
-          ? "💬 " + esc(x.message) + "<br>"
-          : ""}
+          🚗 ${esc(booking.service)}
 
-        <br>
+          | 📅 ${esc(booking.date)}
 
-        <select
-          onchange="changeStatus('${esc(x.id)}',this.value)"
-        >
+          <br>
 
-          <option value="New"
-            ${statusValue==="New"?"selected":""}>
-            🆕 New
-          </option>
+          📍 ${esc(booking.from)}
+          →
+          ${esc(booking.to)}
 
-          <option value="Confirmed"
-            ${statusValue==="Confirmed"?"selected":""}>
-            ✅ Confirmed
-          </option>
+          ${
+            booking.car
+              ? `<br>🚘 Car: ${esc(booking.car)}`
+              : ""
+          }
 
-          <option value="Completed"
-            ${statusValue==="Completed"?"selected":""}>
-            ✔️ Completed
-          </option>
+          ${
+            booking.passengers
+              ? `<br>👥 Passengers: ${esc(booking.passengers)}`
+              : ""
+          }
 
-          <option value="Cancelled"
-            ${statusValue==="Cancelled"?"selected":""}>
-            ❌ Cancelled
-          </option>
+          ${
+            booking.message
+              ? `<br>💬 ${esc(booking.message)}`
+              : ""
+          }
 
-        </select>
+          <br><br>
 
-        <a
-          class="btn small"
-          href="${receipt}"
-          target="_blank"
-        >
-          🧾 Receipt
-        </a>
+          <label>
+            <b>Status:</b>
+          </label>
 
-        <a
-          class="btn small"
-          href="https://wa.me/91${esc(x.mobile)}?text=${waText}"
-          target="_blank"
-        >
-          💬 WhatsApp
-        </a>
+          <select
+            onchange="
+              changeStatus(
+                '${esc(booking.id)}',
+                this.value
+              )
+            "
+          >
 
-      </div>
-    `;
+            <option value="New"
+              ${status === "New" ? "selected" : ""}>
+              🆕 New
+            </option>
 
-  }).join("");
+            <option value="Confirmed"
+              ${status === "Confirmed" ? "selected" : ""}>
+              ✅ Confirmed
+            </option>
+
+            <option value="Completed"
+              ${status === "Completed" ? "selected" : ""}>
+              ✔️ Completed
+            </option>
+
+            <option value="Cancelled"
+              ${status === "Cancelled" ? "selected" : ""}>
+              ❌ Cancelled
+            </option>
+
+          </select>
+
+          <br>
+
+          <a
+            class="btn small"
+            href="${receiptUrl}"
+            target="_blank"
+          >
+            🧾 Receipt
+          </a>
+
+          <a
+            class="btn small"
+            href="${whatsappUrl}"
+            target="_blank"
+          >
+            💬 WhatsApp
+          </a>
+
+        </div>
+      `;
+
+    }).join("");
+
 
   updateCounters(data);
+
 }
 
 
-// ==============================
-// STATUS UPDATE
-// ==============================
-async function changeStatus(id,statusValue){
+// ===============================
+// CHANGE STATUS
+// ===============================
+async function changeStatus(
+  bookingId,
+  newStatus
+) {
 
-  if(!id){
+  if (!bookingId) {
+
     alert("Booking ID missing");
+
     return;
+
   }
 
-  try{
+
+  try {
 
     const url =
       API_URL +
       "?action=status" +
-      "&id=" + encodeURIComponent(id) +
-      "&status=" + encodeURIComponent(statusValue) +
-      "&t=" + Date.now();
+      "&id=" +
+      encodeURIComponent(
+        bookingId
+      ) +
+      "&status=" +
+      encodeURIComponent(
+        newStatus
+      ) +
+      "&t=" +
+      Date.now();
 
-    const response = await fetch(
-      url,
-      {cache:"no-store"}
-    );
 
-    const result = await response.json();
-
-    if(!result.success){
-
-      alert(
-        "Status update failed: " +
-        (result.message || "Unknown error")
+    const response =
+      await fetch(
+        url,
+        {
+          method: "GET",
+          cache: "no-store"
+        }
       );
 
+
+    const result =
+      await response.json();
+
+
+    if (!result.success) {
+
+      alert(
+        "Status update failed:\n" +
+        (result.message ||
+          "Unknown error")
+      );
+
+      await renderBookings();
+
       return;
+
     }
+
 
     await renderBookings();
 
-  }catch(error){
+
+  } catch (error) {
 
     alert(
-      "Status update error: " +
+      "Status update error:\n" +
       error.message
     );
+
   }
+
 }
 
 
-// ==============================
+// ===============================
 // COUNTERS
-// ==============================
-function updateCounters(a){
+// ===============================
+function updateCounters(data) {
 
-  document.getElementById("total").textContent =
-    a.length;
+  const total =
+    document.getElementById("total");
 
-  document.getElementById("newCount").textContent =
-    a.filter(x =>
-      (x.status || "New") === "New"
-    ).length;
+  const newCount =
+    document.getElementById("newCount");
 
-  document.getElementById("confirmed").textContent =
-    a.filter(x =>
-      x.status === "Confirmed"
-    ).length;
+  const confirmed =
+    document.getElementById("confirmed");
 
-  document.getElementById("completed").textContent =
-    a.filter(x =>
-      x.status === "Completed"
-    ).length;
+  const completed =
+    document.getElementById("completed");
+
+
+  if (total) {
+
+    total.textContent =
+      data.length;
+
+  }
+
+
+  if (newCount) {
+
+    newCount.textContent =
+      data.filter(function (x) {
+
+        return (
+          x.status || "New"
+        ) === "New";
+
+      }).length;
+
+  }
+
+
+  if (confirmed) {
+
+    confirmed.textContent =
+      data.filter(function (x) {
+
+        return x.status === "Confirmed";
+
+      }).length;
+
+  }
+
+
+  if (completed) {
+
+    completed.textContent =
+      data.filter(function (x) {
+
+        return x.status === "Completed";
+
+      }).length;
+
+  }
+
 }
 
 
-// ==============================
+// ===============================
 // SEARCH
-// ==============================
-function searchBookings(){
+// ===============================
+function searchBookings() {
 
   renderBookings();
+
 }
 
 
-// ==============================
+// ===============================
 // REFRESH
-// ==============================
-function refreshBookings(){
+// ===============================
+function refreshBookings() {
 
-  renderAll();
+  renderBookings();
+
 }
 
 
-// ==============================
+// ===============================
 // PACKAGES
-// ==============================
-function packages(){
+// ===============================
+function packages() {
 
-  return JSON.parse(
-    localStorage.getItem("kdPackages") || "null"
-  ) || [
+  return (
+    JSON.parse(
+      localStorage.getItem(
+        "kdPackages"
+      ) || "null"
+    )
+    ||
+    [
 
-    {
-      name:"Kashmir Tour",
-      price:"Starting ₹12,999",
-      desc:"Beautiful valleys, mountains and unforgettable experiences.",
-      image:"https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=800&q=80"
-    },
+      {
+        name:
+          "Kashmir Tour",
 
-    {
-      name:"Goa Tour",
-      price:"Starting ₹8,999",
-      desc:"Beaches, sightseeing and exciting activities.",
-      image:"https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80"
-    },
+        price:
+          "Starting ₹12,999",
 
-    {
-      name:"Char Dham Yatra",
-      price:"Custom Package",
-      desc:"A memorable spiritual journey with complete travel support.",
-      image:"https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80"
-    }
+        desc:
+          "Beautiful valleys, mountains and unforgettable experiences.",
 
-  ];
+        image:
+          "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=800&q=80"
+      },
+
+
+      {
+        name:
+          "Goa Tour",
+
+        price:
+          "Starting ₹8,999",
+
+        desc:
+          "Beaches, sightseeing and exciting activities.",
+
+        image:
+          "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80"
+      },
+
+
+      {
+        name:
+          "Char Dham Yatra",
+
+        price:
+          "Custom Package",
+
+        desc:
+          "A memorable spiritual journey with complete travel support.",
+
+        image:
+          "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80"
+      }
+
+    ]
+  );
+
 }
 
 
-function addPackage(){
+// ===============================
+// ADD PACKAGE
+// ===============================
+function addPackage() {
 
-  const p = {
+  const name =
+    document.getElementById(
+      "pName"
+    ).value.trim();
 
-    name:
-      document.getElementById("pName").value.trim(),
 
-    price:
-      document.getElementById("pPrice").value.trim(),
+  const price =
+    document.getElementById(
+      "pPrice"
+    ).value.trim();
 
-    desc:
-      document.getElementById("pDesc").value.trim(),
 
-    image:
-      document.getElementById("pImage").value.trim()
+  const desc =
+    document.getElementById(
+      "pDesc"
+    ).value.trim();
 
-  };
 
-  if(!p.name){
+  const image =
+    document.getElementById(
+      "pImage"
+    ).value.trim();
 
-    alert("Package name required");
+
+  if (!name) {
+
+    alert(
+      "Package name required"
+    );
 
     return;
+
   }
 
-  const a = packages();
 
-  a.push(p);
+  const list =
+    packages();
+
+
+  list.push({
+
+    name:
+      name,
+
+    price:
+      price,
+
+    desc:
+      desc,
+
+    image:
+      image
+
+  });
+
 
   localStorage.setItem(
     "kdPackages",
-    JSON.stringify(a)
+    JSON.stringify(list)
   );
 
-  document.getElementById("pName").value="";
-  document.getElementById("pPrice").value="";
-  document.getElementById("pImage").value="";
-  document.getElementById("pDesc").value="";
+
+  document.getElementById(
+    "pName"
+  ).value = "";
+
+
+  document.getElementById(
+    "pPrice"
+  ).value = "";
+
+
+  document.getElementById(
+    "pDesc"
+  ).value = "";
+
+
+  document.getElementById(
+    "pImage"
+  ).value = "";
+
 
   renderPackages();
+
 }
 
 
-function delPackage(i){
+// ===============================
+// DELETE PACKAGE
+// ===============================
+function delPackage(i) {
 
-  const a = packages();
+  const list =
+    packages();
 
-  a.splice(i,1);
+
+  list.splice(
+    i,
+    1
+  );
+
 
   localStorage.setItem(
     "kdPackages",
-    JSON.stringify(a)
+    JSON.stringify(list)
   );
 
+
   renderPackages();
+
 }
 
 
-function renderPackages(){
+// ===============================
+// RENDER PACKAGES
+// ===============================
+function renderPackages() {
 
-  const el =
-    document.getElementById("adminPackages");
+  const element =
+    document.getElementById(
+      "adminPackages"
+    );
 
-  if(!el) return;
 
-  el.innerHTML =
-    packages().map((p,i)=>`
+  if (!element) return;
 
-      <div class="adminpackage">
 
-        <img src="${esc(p.image)}">
+  element.innerHTML =
+    packages().map(
+      function (p, i) {
 
-        <div>
+        return `
 
-          <b>${esc(p.name)}</b>
+          <div class="adminpackage">
 
-          <br>
+            <img
+              src="${esc(p.image)}"
+            >
 
-          ${esc(p.price)}
+            <div>
 
-          <br>
+              <b>
+                ${esc(p.name)}
+              </b>
 
-          <button onclick="delPackage(${i})">
-            Delete
-          </button>
+              <br>
 
-        </div>
+              ${esc(p.price)}
 
-      </div>
+              <br>
 
-    `).join("");
+              <button
+                onclick="
+                  delPackage(${i})
+                "
+              >
+                Delete
+              </button>
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
 }
 
 
-// ==============================
-// ALL
-// ==============================
-function renderAll(){
+// ===============================
+// RENDER EVERYTHING
+// ===============================
+function renderAll() {
 
   renderPackages();
+
   renderBookings();
+
 }
