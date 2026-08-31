@@ -3,10 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>KD GOLDEN TRAVELS - Booking Receipt</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -56,7 +60,7 @@ body{
 
 .row{
   display:grid;
-  grid-template-columns:180px 1fr;
+  grid-template-columns:190px 1fr;
   border-bottom:1px solid #e5e7eb;
   padding:12px 0;
 }
@@ -68,6 +72,25 @@ body{
 
 .value{
   font-weight:600;
+}
+
+.amount-row{
+  margin-top:18px;
+  padding:18px;
+  background:#fff8df;
+  border:2px solid #f5bd32;
+  border-radius:14px;
+  text-align:center;
+}
+
+.amount-title{
+  font-weight:bold;
+}
+
+.amount{
+  font-size:32px;
+  font-weight:900;
+  margin-top:5px;
 }
 
 .status{
@@ -110,7 +133,17 @@ button{
   color:#667085;
 }
 
+.note{
+  margin-top:12px;
+  padding:10px;
+  background:#f7f8fa;
+  border-radius:8px;
+  font-size:12px;
+  color:#667085;
+}
+
 @media(max-width:600px){
+
   .receipt{
     margin:10px;
     padding:18px;
@@ -124,9 +157,11 @@ button{
   .buttons{
     flex-direction:column;
   }
+
 }
 
 @media print{
+
   body{
     background:#fff;
   }
@@ -140,7 +175,9 @@ button{
   .buttons{
     display:none;
   }
+
 }
+
 </style>
 </head>
 
@@ -149,107 +186,494 @@ button{
 <div class="receipt">
 
   <div class="head">
+
     <div class="logo">
       KD <b>GOLDEN</b> TRAVELS
     </div>
+
     <div class="sub">
       Your Journey, Our Responsibility
     </div>
+
   </div>
+
 
   <div class="booking-id">
-    Booking ID: <span id="id">---</span>
+
+    Booking ID:
+    <span id="id">---</span>
+
   </div>
 
-  <div class="row">
-    <div class="label">Customer Name</div>
-    <div class="value" id="name">---</div>
-  </div>
 
   <div class="row">
-    <div class="label">Mobile</div>
-    <div class="value" id="mobile">---</div>
-  </div>
 
-  <div class="row">
-    <div class="label">Service</div>
-    <div class="value" id="service">---</div>
-  </div>
-
-  <div class="row">
-    <div class="label">From</div>
-    <div class="value" id="from">---</div>
-  </div>
-
-  <div class="row">
-    <div class="label">To</div>
-    <div class="value" id="to">---</div>
-  </div>
-
-  <div class="row">
-    <div class="label">Travel Date</div>
-    <div class="value" id="date">---</div>
-  </div>
-
-  <div class="row">
-    <div class="label">Booking Status</div>
-    <div class="value">
-      <span class="status">New</span>
+    <div class="label">
+      Customer Name
     </div>
+
+    <div class="value" id="name">
+      ---
+    </div>
+
   </div>
+
+
+  <div class="row">
+
+    <div class="label">
+      Mobile
+    </div>
+
+    <div class="value" id="mobile">
+      ---
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="label">
+      Service
+    </div>
+
+    <div class="value" id="service">
+      ---
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="label">
+      From
+    </div>
+
+    <div class="value" id="from">
+      ---
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="label">
+      To
+    </div>
+
+    <div class="value" id="to">
+      ---
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="label">
+      Travel Date
+    </div>
+
+    <div class="value" id="date">
+      ---
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="label">
+      🚘 Car
+    </div>
+
+    <div class="value" id="car">
+      ---
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="label">
+      👥 Passengers
+    </div>
+
+    <div class="value" id="passengers">
+      ---
+    </div>
+
+  </div>
+
+
+  <!-- DISTANCE -->
+
+  <div class="row">
+
+    <div class="label">
+      📍 Distance
+    </div>
+
+    <div class="value">
+      <span id="distance">---</span> KM
+    </div>
+
+  </div>
+
+
+  <!-- TRAVEL TIME -->
+
+  <div class="row">
+
+    <div class="label">
+      ⏱️ Travel Time
+    </div>
+
+    <div class="value" id="travelTime">
+      ---
+    </div>
+
+  </div>
+
+
+  <!-- FUEL -->
+
+  <div class="row">
+
+    <div class="label">
+      ⛽ Fuel Type
+    </div>
+
+    <div class="value" id="fuel">
+      ---
+    </div>
+
+  </div>
+
+
+  <!-- RATE -->
+
+  <div class="row">
+
+    <div class="label">
+      💵 Rate
+    </div>
+
+    <div class="value">
+      ₹<span id="rate">---</span> / KM
+    </div>
+
+  </div>
+
+
+  <!-- AMOUNT -->
+
+  <div class="amount-row">
+
+    <div class="amount-title">
+      💰 Estimated Booking Amount
+    </div>
+
+    <div class="amount">
+      ₹<span id="amount">0</span>
+    </div>
+
+  </div>
+
+
+  <!-- MESSAGE -->
+
+  <div class="row">
+
+    <div class="label">
+      💬 Message
+    </div>
+
+    <div class="value" id="message">
+      ---
+    </div>
+
+  </div>
+
+
+  <!-- STATUS -->
+
+  <div class="row">
+
+    <div class="label">
+      Booking Status
+    </div>
+
+    <div class="value">
+
+      <span
+        class="status"
+        id="status"
+      >
+        New
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="note">
+
+    * यह Estimated Amount है।  
+    Toll, Parking, Night Charges आदि अलग हो सकते हैं।
+
+  </div>
+
 
   <div class="footer">
-    <b>KD GOLDEN TRAVELS</b><br>
+
+    <b>
+      KD GOLDEN TRAVELS
+    </b>
+
+    <br>
+
     📞 7222826299
+
+    <br>
+
+    Your Journey, Our Responsibility
+
   </div>
 
+
   <div class="buttons">
-    <button class="print" onclick="window.print()">
+
+    <button
+      class="print"
+      onclick="window.print()"
+    >
       🖨️ Print / Save PDF
     </button>
 
-    <button class="wa" onclick="sendWhatsApp()">
+
+    <button
+      class="wa"
+      onclick="sendWhatsApp()"
+    >
       💬 WhatsApp
     </button>
+
   </div>
 
 </div>
 
+
 <script>
 
-const p = new URLSearchParams(location.search);
+const p =
+  new URLSearchParams(
+    location.search
+  );
 
-const get = key => p.get(key) || "---";
 
-document.getElementById("id").textContent = get("id");
-document.getElementById("name").textContent = get("name");
-document.getElementById("mobile").textContent = get("mobile");
-document.getElementById("service").textContent = get("service");
-document.getElementById("from").textContent = get("from");
-document.getElementById("to").textContent = get("to");
-document.getElementById("date").textContent = get("date");
+function get(key){
+
+  return p.get(key) || "---";
+
+}
+
+
+function setText(
+  id,
+  value
+){
+
+  const el =
+    document.getElementById(id);
+
+  if(el){
+
+    el.textContent =
+      value;
+
+  }
+
+}
+
+
+// BASIC DETAILS
+
+setText(
+  "id",
+  get("id")
+);
+
+setText(
+  "name",
+  get("name")
+);
+
+setText(
+  "mobile",
+  get("mobile")
+);
+
+setText(
+  "service",
+  get("service")
+);
+
+setText(
+  "from",
+  get("from")
+);
+
+setText(
+  "to",
+  get("to")
+);
+
+setText(
+  "date",
+  get("date")
+);
+
+
+// NEW DETAILS
+
+setText(
+  "car",
+  get("car")
+);
+
+setText(
+  "passengers",
+  get("passengers")
+);
+
+setText(
+  "distance",
+  get("distance")
+);
+
+setText(
+  "travelTime",
+  get("travelTime")
+);
+
+setText(
+  "fuel",
+  get("fuel")
+);
+
+setText(
+  "rate",
+  get("rate")
+);
+
+setText(
+  "message",
+  get("message")
+);
+
+
+// AMOUNT
+
+const amount =
+  get("amount");
+
+if(amount !== "---"){
+
+  const number =
+    Number(
+      String(amount)
+        .replace(/,/g,"")
+    );
+
+
+  if(!isNaN(number)){
+
+    setText(
+      "amount",
+      number.toLocaleString(
+        "en-IN"
+      )
+    );
+
+  }else{
+
+    setText(
+      "amount",
+      amount
+    );
+
+  }
+
+}
+
+
+// STATUS
+
+setText(
+  "status",
+  get("status") === "---"
+    ? "New"
+    : get("status")
+);
+
+
+// WHATSAPP
 
 function sendWhatsApp(){
 
   const text =
+
 `KD GOLDEN TRAVELS BOOKING RECEIPT
 
 Booking ID: ${get("id")}
-Name: ${get("name")}
+
+Customer: ${get("name")}
+
 Mobile: ${get("mobile")}
+
 Service: ${get("service")}
+
 From: ${get("from")}
+
 To: ${get("to")}
+
 Travel Date: ${get("date")}
+
+Car: ${get("car")}
+
+Passengers: ${get("passengers")}
+
+Distance: ${get("distance")} KM
+
+Travel Time: ${get("travelTime")}
+
+Fuel: ${get("fuel")}
+
+Rate: ₹${get("rate")}/KM
+
+Estimated Amount: ₹${get("amount")}
+
+Status: ${get("status")}
 
 KD GOLDEN TRAVELS
 7222826299`;
 
+
   window.open(
+
     "https://wa.me/917222826299?text=" +
     encodeURIComponent(text),
+
     "_blank"
+
   );
+
 }
 
 </script>
