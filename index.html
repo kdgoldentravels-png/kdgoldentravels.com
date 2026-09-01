@@ -1,132 +1,2687 @@
-function calculateAmount() {
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KD GOLDEN TRAVELS - Cab Booking</title>
 
-  const tripType = document.getElementById("tripType").value;
-  const distance = Number(currentDistance || 0);
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f1f5f9;
+  color:#172033;
+}
+
+header{
+  background:#07152d;
+  color:#fff;
+  padding:14px 18px;
+  position:sticky;
+  top:0;
+  z-index:9999;
+}
+
+.header{
+  max-width:700px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:21px;
+  font-weight:900;
+}
+
+.logo span{
+  color:#f5bd32;
+}
+
+.admin{
+  color:#fff;
+  text-decoration:none;
+  font-size:13px;
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:15px;
+}
+
+.booking-card{
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 5px 25px #0001;
+}
+
+h2{
+  margin:5px 0 18px;
+}
+
+.field{
+  margin-bottom:13px;
+}
+
+label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.location-box{
+  border:1px solid #d6deea;
+  border-radius:12px;
+  background:#fff;
+  overflow:hidden;
+}
+
+.location-top{
+  display:flex;
+  align-items:center;
+}
+
+.location-icon{
+  font-size:20px;
+  padding-left:12px;
+}
+
+.location-input{
+  border:0!important;
+  margin:0!important;
+  flex:1;
+  outline:none;
+  padding:14px 8px!important;
+}
+
+.current-btn{
+  border:0;
+  background:#eef5ff;
+  color:#1261b5;
+  padding:10px;
+  margin-right:6px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.location-map{
+  display:none;
+  padding:8px;
+  border-top:1px solid #e5e7eb;
+  background:#f8fafc;
+}
+
+.location-map.open{
+  display:block;
+}
+
+.map{
+  width:100%;
+  height:240px;
+  border-radius:10px;
+}
+
+.map-hint{
+  font-size:12px;
+  color:#667085;
+  padding:5px;
+}
+
+.suggestions{
+  display:none;
+  border-top:1px solid #eee;
+  max-height:180px;
+  overflow:auto;
+}
+
+.suggestion{
+  padding:12px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.suggestion:hover{
+  background:#f5f8fc;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #d6deea;
+  border-radius:9px;
+  font-size:15px;
+  background:#fff;
+}
+
+textarea{
+  resize:vertical;
+}
+
+.route-section{
+  margin-top:15px;
+  padding:14px;
+  background:#f8fafc;
+  border-radius:13px;
+  display:none;
+}
+
+.route-section.show{
+  display:block;
+}
+
+.route-summary{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.summary{
+  background:#fff;
+  border-radius:9px;
+  padding:10px;
+  text-align:center;
+}
+
+.summary small{
+  display:block;
+  color:#667085;
+}
+
+.summary b{
+  display:block;
+  margin-top:4px;
+}
+
+.routes-title{
+  margin-top:15px;
+  font-weight:bold;
+}
+
+.route-card{
+  background:#fff;
+  border:2px solid #dce3ed;
+  padding:12px;
+  border-radius:10px;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+.route-card.selected{
+  border-color:#f5bd32;
+  background:#fff9e6;
+}
+
+.route-card button{
+  margin-top:8px;
+  border:0;
+  padding:8px 12px;
+  border-radius:7px;
+  background:#f5bd32;
+  font-weight:bold;
+}
+
+.fare{
+  margin-top:15px;
+  background:#fff8df;
+  border:2px solid #f5bd32;
+  border-radius:13px;
+  padding:15px;
+}
+
+.fare-title{
+  text-align:center;
+  font-weight:bold;
+  font-size:18px;
+}
+
+.fare-row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid #eadba5;
+}
+
+.total{
+  text-align:center;
+  font-size:32px;
+  font-weight:900;
+  margin-top:12px;
+}
+
+.fare-message{
+  text-align:center;
+  color:#667085;
+  margin-top:5px;
+}
+
+.contact{
+  display:none;
+  background:#fff0f0;
+  border:1px solid #ffb4b4;
+  color:#991b1b;
+  border-radius:10px;
+  padding:12px;
+  margin-top:10px;
+  text-align:center;
+}
+
+.extra{
+  margin-top:15px;
+  background:#f8fafc;
+  border-radius:12px;
+  padding:13px;
+}
+
+.extra-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.book-btn{
+  width:100%;
+  border:0;
+  background:#f5bd32;
+  color:#07152d;
+  padding:16px;
+  border-radius:10px;
+  font-size:17px;
+  font-weight:bold;
+  margin-top:15px;
+  cursor:pointer;
+}
+
+.wa-btn{
+  width:100%;
+  border:0;
+  background:#25d366;
+  color:#fff;
+  padding:14px;
+  border-radius:10px;
+  font-weight:bold;
+  margin-top:8px;
+  cursor:pointer;
+}
+
+.result{
+  margin-top:12px;
+  text-align:center;
+  font-weight:bold;
+}
+
+.receipt{
+  display:none;
+  margin-top:12px;
+  background:#07152d;
+  color:#fff;
+  padding:13px;
+  border-radius:9px;
+  text-align:center;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+@media(max-width:600px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .extra-grid{
+    grid-template-columns:1fr;
+  }
+
+  .route-summary{
+    grid-template-columns:1fr 1fr 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header">
+
+    <div class="logo">
+      KD <span>GOLDEN</span> TRAVELS
+    </div>
+
+    <a class="admin" href="admin.html">
+      Admin
+    </a>
+
+  </div>
+</header>
+
+
+<div class="container">
+
+<div class="booking-card">
+
+<h2>🚕 Book Your Cab</h2>
+
+
+<!-- CUSTOMER -->
+
+<div class="grid">
+
+<div class="field">
+<label>Customer Name *</label>
+<input id="name" placeholder="नाम" required>
+</div>
+
+<div class="field">
+<label>Mobile *</label>
+<input id="mobile"
+       inputmode="numeric"
+       maxlength="10"
+       placeholder="10 Digit Mobile"
+       required>
+</div>
+
+</div>
+
+
+<!-- FROM -->
+
+<div class="field">
+
+<label>📍 From / Pickup</label>
+
+<div class="location-box">
+
+<div class="location-top">
+
+<span class="location-icon">🟢</span>
+
+<input
+ id="from"
+ class="location-input"
+ placeholder="Pickup location लिखें"
+ autocomplete="off">
+
+<button
+ type="button"
+ class="current-btn"
+ onclick="currentLocation('from')">
+📍 Current
+</button>
+
+</div>
+
+<div id="fromSuggestions"
+     class="suggestions"></div>
+
+<div id="fromMapBox"
+     class="location-map">
+
+<div id="fromMap"
+     class="map"></div>
+
+<div class="map-hint">
+📍 Map पर सीधे Pickup Point चुनें
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- TO -->
+
+<div class="field">
+
+<label>📍 To / Drop</label>
+
+<div class="location-box">
+
+<div class="location-top">
+
+<span class="location-icon">🔴</span>
+
+<input
+ id="to"
+ class="location-input"
+ placeholder="Drop location लिखें"
+ autocomplete="off">
+
+</div>
+
+<div id="toSuggestions"
+     class="suggestions"></div>
+
+<div id="toMapBox"
+     class="location-map">
+
+<div id="toMap"
+     class="map"></div>
+
+<div class="map-hint">
+📍 Map पर सीधे Drop Point चुनें
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- TRIP -->
+
+<div class="grid">
+
+<div class="field">
+
+<label>Trip Type</label>
+
+<select id="tripType">
+
+<option value="oneway">
+➡️ One Side
+</option>
+
+<option value="round">
+🔄 Both Side / Round Trip
+</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>Fuel Type</label>
+
+<select id="fuel">
+
+<option>CNG</option>
+<option>Petrol</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="field">
+
+<label>Travel Date</label>
+
+<input
+ id="date"
+ type="date">
+
+</div>
+
+<div class="field">
+
+<label>Passengers</label>
+
+<input
+ id="passengers"
+ type="number"
+ min="1"
+ value="1">
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>Car</label>
+
+<select id="car">
+
+<option value="">Car Select करें</option>
+<option>Sedan</option>
+<option>SUV</option>
+<option>Ertiga</option>
+<option>Innova</option>
+<option>Innova Crysta</option>
+<option>Tempo Traveller</option>
+
+</select>
+
+</div>
+
+
+<!-- ROUTE -->
+
+<div id="routeSection"
+     class="route-section">
+
+<div class="route-summary">
+
+<div class="summary">
+<small>Distance</small>
+<b id="distance">0 KM</b>
+</div>
+
+<div class="summary">
+<small>Time</small>
+<b id="time">--</b>
+</div>
+
+<div class="summary">
+<small>Route</small>
+<b id="routeNo">1</b>
+</div>
+
+</div>
+
+
+<div class="routes-title">
+🛣️ Available Routes
+</div>
+
+<div id="routes"></div>
+
+</div>
+
+
+<!-- EXTRA -->
+
+<div class="extra">
+
+<h3>➕ Extra Charges</h3>
+
+<div class="extra-grid">
+
+<div>
+
+<label>🌙 Night Charge</label>
+
+<select id="night">
+
+<option value="0">
+No
+</option>
+
+<option value="300">
+Yes - ₹300
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>🧾 Toll Tax</label>
+
+<input
+ id="toll"
+ type="number"
+ min="0"
+ value="0"
+ placeholder="Toll">
+
+</div>
+
+
+<div>
+
+<label>🅿️ Parking</label>
+
+<input
+ id="parking"
+ type="number"
+ min="0"
+ value="0"
+ placeholder="Parking">
+
+</div>
+
+
+<div>
+
+<label>🍛 Food</label>
+
+<input
+ id="food"
+ type="number"
+ min="0"
+ value="0"
+ placeholder="Food">
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- FARE -->
+
+<div class="fare">
+
+<div class="fare-title">
+💰 Fare Summary
+</div>
+
+<div class="fare-row">
+<span>Base Fare</span>
+<b>₹<span id="baseFare">0</span></b>
+</div>
+
+<div class="fare-row">
+<span>Night</span>
+<b>₹<span id="nightShow">0</span></b>
+</div>
+
+<div class="fare-row">
+<span>Toll</span>
+<b>₹<span id="tollShow">0</span></b>
+</div>
+
+<div class="fare-row">
+<span>Parking</span>
+<b>₹<span id="parkingShow">0</span></b>
+</div>
+
+<div class="fare-row">
+<span>Food</span>
+<b>₹<span id="foodShow">0</span></b>
+</div>
+
+<div class="total">
+₹<span id="total">0</span>
+</div>
+
+<div class="fare-message"
+     id="fareMessage">
+Route select करें।
+</div>
+
+<div class="contact"
+     id="contact">
+
+⚠️ <b>Contact & Confirm</b>
+<br><br>
+इस दूरी के लिए automatic fare उपलब्ध नहीं है।
+<br>
+📞 <a href="tel:7222826299">
+7222826299
+</a>
+
+</div>
+
+</div>
+
+
+<div class="field">
+
+<label>Message</label>
+
+<textarea
+ id="message"
+ rows="3"
+ placeholder="कोई विशेष जानकारी"></textarea>
+
+</div>
+
+
+<button
+ type="button"
+ class="book-btn"
+ onclick="bookNow()">
+
+📲 Confirm Booking
+
+</button>
+
+
+<button
+ type="button"
+ class="wa-btn"
+ onclick="sendWhatsApp()">
+
+💬 WhatsApp Enquiry
+
+</button>
+
+
+<div id="result"
+     class="result"></div>
+
+
+<a id="receipt"
+   class="receipt"
+   target="_blank">
+🧾 Booking Receipt खोलें
+</a>
+
+</div>
+
+</div>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+/* =====================================================
+   GOOGLE APPS SCRIPT API
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbzW8Ns6d74iNImmvpd66hMntXbbd1sY8Rr-LH4zzPYiqaUXnXGK8KxgxnxnWud_n-L0/exec";
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let fromPoint = null;
+let toPoint = null;
+
+let fromMap = null;
+let toMap = null;
+
+let fromMarker = null;
+let toMarker = null;
+
+let fromMapOpen = false;
+let toMapOpen = false;
+
+let activeMap = null;
+
+let routes = [];
+let selectedRoute = 0;
+
+let currentDistance = 0;
+let currentTime = "";
+
+
+/* =====================================================
+   DEFAULT DATE
+===================================================== */
+
+document.getElementById("date").value =
+new Date().toISOString().split("T")[0];
+
+
+/* =====================================================
+   LOCATION INPUT
+===================================================== */
+
+setupLocationSearch(
+  "from",
+  "fromSuggestions",
+  "fromMapBox",
+  "from"
+);
+
+setupLocationSearch(
+  "to",
+  "toSuggestions",
+  "toMapBox",
+  "to"
+);
+
+
+function setupLocationSearch(
+  inputId,
+  suggestionId,
+  mapBoxId,
+  type
+){
+
+  const input =
+    document.getElementById(inputId);
+
+  const suggestions =
+    document.getElementById(suggestionId);
+
+  input.addEventListener(
+    "focus",
+    function(){
+
+      openLocationMap(type);
+
+    }
+  );
+
+
+  let timer = null;
+
+  input.addEventListener(
+    "input",
+    function(){
+
+      clearTimeout(timer);
+
+      const q =
+        input.value.trim();
+
+      if(q.length < 3){
+
+        suggestions.style.display =
+          "none";
+
+        return;
+
+      }
+
+      timer =
+        setTimeout(
+          function(){
+
+            searchSuggestions(
+              q,
+              suggestionId,
+              type
+            );
+
+          },
+          500
+        );
+
+    }
+  );
+
+
+  input.addEventListener(
+    "change",
+    function(){
+
+      if(
+        input.value.trim().length >= 3
+      ){
+
+        geocodeLocation(
+          input.value.trim(),
+          type
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   OPEN INLINE MAP
+===================================================== */
+
+function openLocationMap(type){
+
+  if(type === "from"){
+
+    document
+      .getElementById("fromMapBox")
+      .classList.add("open");
+
+    if(!fromMap){
+
+      fromMap =
+        L.map("fromMap")
+         .setView(
+           [27.0238,77.1025],
+           7
+         );
+
+      L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom:19,
+          attribution:"© OpenStreetMap"
+        }
+      ).addTo(fromMap);
+
+
+      fromMap.on(
+        "click",
+        function(e){
+
+          setMapPoint(
+            "from",
+            e.latlng.lat,
+            e.latlng.lng
+          );
+
+        }
+      );
+
+    }
+
+    setTimeout(
+      () => fromMap.invalidateSize(),
+      100
+    );
+
+    activeMap = "from";
+
+  }
+
+
+  if(type === "to"){
+
+    document
+      .getElementById("toMapBox")
+      .classList.add("open");
+
+    if(!toMap){
+
+      toMap =
+        L.map("toMap")
+         .setView(
+           [27.0238,77.1025],
+           7
+         );
+
+      L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+          maxZoom:19,
+          attribution:"© OpenStreetMap"
+        }
+      ).addTo(toMap);
+
+
+      toMap.on(
+        "click",
+        function(e){
+
+          setMapPoint(
+            "to",
+            e.latlng.lat,
+            e.latlng.lng
+          );
+
+        }
+      );
+
+    }
+
+    setTimeout(
+      () => toMap.invalidateSize(),
+      100
+    );
+
+    activeMap = "to";
+
+  }
+
+}
+
+
+/* =====================================================
+   CURRENT LOCATION
+===================================================== */
+
+function currentLocation(type){
+
+  if(!navigator.geolocation){
+
+    alert(
+      "इस मोबाइल में GPS उपलब्ध नहीं है।"
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    type
+  ).value =
+    "📍 Current location खोज रहे हैं...";
+
+
+  navigator.geolocation.getCurrentPosition(
+
+    async function(position){
+
+      const lat =
+        position.coords.latitude;
+
+      const lon =
+        position.coords.longitude;
+
+
+      setMapPoint(
+        type,
+        lat,
+        lon
+      );
+
+
+      try{
+
+        const address =
+          await reverseGeocode(
+            lat,
+            lon
+          );
+
+
+        document.getElementById(
+          type
+        ).value =
+          address;
+
+      }catch(e){
+
+        document.getElementById(
+          type
+        ).value =
+          lat.toFixed(6) +
+          ", " +
+          lon.toFixed(6);
+
+      }
+
+
+      if(
+        fromPoint &&
+        toPoint
+      ){
+
+        calculateRoutes();
+
+      }
+
+    },
+
+    function(error){
+
+      document.getElementById(
+        type
+      ).value = "";
+
+      alert(
+        "GPS Location नहीं मिल पाई। कृपया location permission Allow करें।"
+      );
+
+    },
+
+    {
+      enableHighAccuracy:true,
+      timeout:15000,
+      maximumAge:0
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   MAP POINT
+===================================================== */
+
+async function setMapPoint(
+  type,
+  lat,
+  lon
+){
+
+  const point = {
+    lat:lat,
+    lon:lon
+  };
+
+
+  if(type === "from"){
+
+    fromPoint = point;
+
+    openLocationMap("from");
+
+
+    if(fromMarker){
+
+      fromMap.removeLayer(
+        fromMarker
+      );
+
+    }
+
+
+    fromMarker =
+      L.marker([
+        lat,
+        lon
+      ])
+      .addTo(fromMap)
+      .bindPopup(
+        "📍 Pickup"
+      )
+      .openPopup();
+
+
+    fromMap.setView(
+      [lat,lon],
+      14
+    );
+
+
+    document.getElementById(
+      "from"
+    ).value =
+      "Map Location";
+
+
+    try{
+
+      document.getElementById(
+        "from"
+      ).value =
+        await reverseGeocode(
+          lat,
+          lon
+        );
+
+    }catch(e){}
+
+  }
+
+
+  if(type === "to"){
+
+    toPoint = point;
+
+    openLocationMap("to");
+
+
+    if(toMarker){
+
+      toMap.removeLayer(
+        toMarker
+      );
+
+    }
+
+
+    toMarker =
+      L.marker([
+        lat,
+        lon
+      ])
+      .addTo(toMap)
+      .bindPopup(
+        "📍 Drop"
+      )
+      .openPopup();
+
+
+    toMap.setView(
+      [lat,lon],
+      14
+    );
+
+
+    document.getElementById(
+      "to"
+    ).value =
+      "Map Location";
+
+
+    try{
+
+      document.getElementById(
+        "to"
+      ).value =
+        await reverseGeocode(
+          lat,
+          lon
+        );
+
+    }catch(e){}
+
+  }
+
+
+  if(
+    fromPoint &&
+    toPoint
+  ){
+
+    calculateRoutes();
+
+  }
+
+}
+
+
+/* =====================================================
+   SEARCH SUGGESTIONS
+===================================================== */
+
+async function searchSuggestions(
+  q,
+  suggestionId,
+  type
+){
+
+  try{
+
+    const url =
+      "https://nominatim.openstreetmap.org/search" +
+      "?format=json" +
+      "&limit=5" +
+      "&countrycodes=in" +
+      "&q=" +
+      encodeURIComponent(q);
+
+
+    const r =
+      await fetch(
+        url,
+        {
+          headers:{
+            "Accept-Language":"hi,en"
+          }
+        }
+      );
+
+
+    const data =
+      await r.json();
+
+
+    const box =
+      document.getElementById(
+        suggestionId
+      );
+
+
+    box.innerHTML = "";
+
+
+    if(!data.length){
+
+      box.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    data.forEach(
+      function(item){
+
+        const div =
+          document.createElement(
+            "div"
+          );
+
+
+        div.className =
+          "suggestion";
+
+
+        div.textContent =
+          item.display_name;
+
+
+        div.onclick =
+          function(){
+
+            document.getElementById(
+              type
+            ).value =
+              item.display_name;
+
+
+            document.getElementById(
+              suggestionId
+            ).style.display =
+              "none";
+
+
+            setMapPoint(
+              type,
+              parseFloat(item.lat),
+              parseFloat(item.lon)
+            );
+
+          };
+
+
+        box.appendChild(
+          div
+        );
+
+      }
+    );
+
+
+    box.style.display =
+      "block";
+
+  }catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+
+/* =====================================================
+   GEOCODE
+===================================================== */
+
+async function geocodeLocation(
+  place,
+  type
+){
+
+  try{
+
+    const url =
+      "https://nominatim.openstreetmap.org/search" +
+      "?format=json" +
+      "&limit=1" +
+      "&countrycodes=in" +
+      "&q=" +
+      encodeURIComponent(place);
+
+
+    const r =
+      await fetch(
+        url
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if(!data.length){
+
+      return;
+
+    }
+
+
+    setMapPoint(
+      type,
+      parseFloat(data[0].lat),
+      parseFloat(data[0].lon)
+    );
+
+  }catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+
+/* =====================================================
+   REVERSE GEOCODE
+===================================================== */
+
+async function reverseGeocode(
+  lat,
+  lon
+){
+
+  const url =
+    "https://nominatim.openstreetmap.org/reverse" +
+    "?format=json" +
+    "&lat=" +
+    lat +
+    "&lon=" +
+    lon;
+
+
+  const r =
+    await fetch(
+      url,
+      {
+        headers:{
+          "Accept-Language":"hi,en"
+        }
+      }
+    );
+
+
+  const data =
+    await r.json();
+
+
+  return (
+    data.display_name ||
+    lat.toFixed(5) +
+    ", " +
+    lon.toFixed(5)
+  );
+
+}
+
+
+/* =====================================================
+   MULTIPLE ROUTES
+===================================================== */
+
+async function calculateRoutes(){
+
+  if(
+    !fromPoint ||
+    !toPoint
+  ){
+
+    return;
+
+  }
+
+
+  const section =
+    document.getElementById(
+      "routeSection"
+    );
+
+
+  section.classList.add(
+    "show"
+  );
+
+
+  document.getElementById(
+    "routes"
+  ).innerHTML =
+    "⏳ Multiple routes खोजी जा रही हैं...";
+
+
+  try{
+
+    const url =
+      "https://router.project-osrm.org/route/v1/driving/" +
+
+      fromPoint.lon +
+      "," +
+      fromPoint.lat +
+
+      ";" +
+
+      toPoint.lon +
+      "," +
+      toPoint.lat +
+
+      "?alternatives=true" +
+      "&overview=full" +
+      "&geometries=geojson";
+
+
+    const r =
+      await fetch(
+        url
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if(
+      !data.routes ||
+      !data.routes.length
+    ){
+
+      throw new Error(
+        "Route नहीं मिली"
+      );
+
+    }
+
+
+    routes =
+      data.routes;
+
+
+    showRoutes();
+
+
+  }catch(error){
+
+    document.getElementById(
+      "routes"
+    ).innerHTML =
+      "❌ Route calculate नहीं हो पाई।";
+
+  }
+
+}
+
+
+/* =====================================================
+   SHOW ROUTES
+===================================================== */
+
+function showRoutes(){
+
+  const box =
+    document.getElementById(
+      "routes"
+    );
+
+
+  box.innerHTML = "";
+
+
+  routes.forEach(
+    function(route,index){
+
+      const km =
+        route.distance /
+        1000;
+
+
+      const minutes =
+        Math.round(
+          route.duration /
+          60
+        );
+
+
+      const hours =
+        Math.floor(
+          minutes / 60
+        );
+
+
+      const mins =
+        minutes % 60;
+
+
+      const time =
+        hours > 0
+        ? hours +
+          " घंटे " +
+          mins +
+          " मिनट"
+        : mins +
+          " मिनट";
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "route-card" +
+        (
+          index === 0
+          ? " selected"
+          : ""
+        );
+
+
+      card.innerHTML =
+        "<b>🛣️ Route " +
+        (index + 1) +
+        "</b><br>" +
+
+        "📏 " +
+        km.toFixed(1) +
+        " KM" +
+
+        " &nbsp; • &nbsp; " +
+
+        "⏱️ " +
+        time +
+
+        "<br>" +
+
+        "<button type='button'>" +
+        "Select Route" +
+        "</button>";
+
+
+      card.onclick =
+        function(){
+
+          selectRoute(
+            index
+          );
+
+        };
+
+
+      box.appendChild(
+        card
+      );
+
+    }
+  );
+
+
+  selectRoute(0);
+
+}
+
+
+/* =====================================================
+   SELECT ROUTE
+===================================================== */
+
+function selectRoute(index){
+
+  selectedRoute =
+    index;
+
+
+  const route =
+    routes[index];
+
+
+  if(!route){
+
+    return;
+
+  }
+
+
+  currentDistance =
+    route.distance /
+    1000;
+
+
+  const minutes =
+    Math.round(
+      route.duration /
+      60
+    );
+
+
+  const hours =
+    Math.floor(
+      minutes / 60
+    );
+
+
+  const mins =
+    minutes % 60;
+
+
+  currentTime =
+    hours > 0
+    ? hours +
+      " घंटे " +
+      mins +
+      " मिनट"
+    : mins +
+      " मिनट";
+
+
+  document.getElementById(
+    "distance"
+  ).textContent =
+    currentDistance.toFixed(1) +
+    " KM";
+
+
+  document.getElementById(
+    "time"
+  ).textContent =
+    currentTime;
+
+
+  document.getElementById(
+    "routeNo"
+  ).textContent =
+    "Route " +
+    (index + 1);
+
+
+  const cards =
+    document.querySelectorAll(
+      ".route-card"
+    );
+
+
+  cards.forEach(
+    function(card,i){
+
+      card.classList.toggle(
+        "selected",
+        i === index
+      );
+
+    }
+  );
+
+
+  calculateFare();
+
+}
+
+
+/* =====================================================
+   FARE CALCULATION
+===================================================== */
+
+function calculateFare(){
+
+  const tripType =
+    document.getElementById(
+      "tripType"
+    ).value;
+
+
+  const distance =
+    Number(
+      currentDistance || 0
+    );
+
 
   let baseFare = 0;
   let contactRequired = false;
 
-  // =========================
-  // ONE SIDE
-  // =========================
-  if (tripType === "oneway") {
 
-    if (distance < 125) {
-      contactRequired = true;
-      baseFare = 0;
-    } else {
-      baseFare = distance * 22;
-    }
-  }
+  /* =========================================
+     ONE SIDE
+  ========================================= */
 
-  // =========================
-  // BOTH SIDE
-  // =========================
-  if (tripType === "round") {
+  if(
+    tripType === "oneway"
+  ){
 
-    const bothDistance = distance * 2;
+    if(
+      distance < 125
+    ){
 
-    // 150 KM से 250 KM तक
-    if (bothDistance >= 150 && bothDistance <= 250) {
+      contactRequired =
+        true;
 
-      baseFare = 3000;
-
-    }
-
-    // 250 KM से अधिक
-    else if (bothDistance > 250) {
-
-      baseFare = bothDistance * 12;
-
-    }
-
-    // 150 KM से कम
-    else {
-
-      contactRequired = true;
       baseFare = 0;
 
+    }else{
+
+      baseFare =
+        distance * 22;
+
     }
+
   }
 
-  // =========================
-  // EXTRA CHARGES
-  // =========================
 
-  const night = Number(
-    document.getElementById("nightCharge").value || 0
-  );
+  /* =========================================
+     BOTH SIDE
+  ========================================= */
 
-  const toll = Number(
-    document.getElementById("toll").value || 0
-  );
+  if(
+    tripType === "round"
+  ){
 
-  const parking = Number(
-    document.getElementById("parking").value || 0
-  );
+    const totalDistance =
+      distance * 2;
 
-  const total = baseFare + night + toll + parking;
 
-  // =========================
-  // DISPLAY
-  // =========================
+    /*
+      150–250 KM = ₹3000 FIX
+    */
 
-  document.getElementById("baseFare").textContent =
-    Math.round(baseFare).toLocaleString("en-IN");
+    if(
+      totalDistance >= 150 &&
+      totalDistance <= 250
+    ){
 
-  document.getElementById("tollShow").textContent =
-    Math.round(toll).toLocaleString("en-IN");
+      baseFare =
+        3000;
 
-  document.getElementById("nightShow").textContent =
-    Math.round(night).toLocaleString("en-IN");
+    }
 
-  document.getElementById("parkingShow").textContent =
-    Math.round(parking).toLocaleString("en-IN");
 
-  document.getElementById("amount").textContent =
-    Math.round(total).toLocaleString("en-IN");
+    /*
+      250 KM से ज्यादा = ₹12/KM
+    */
 
-  const contactBox =
-    document.getElementById("contactBox");
+    else if(
+      totalDistance > 250
+    ){
 
-  if (contactRequired) {
+      baseFare =
+        totalDistance * 12;
 
-    contactBox.style.display = "block";
+    }
 
-    document.getElementById("amountText").textContent =
-      "⚠️ Fare Contact करके Confirm करें";
 
-  } else {
+    /*
+      150 KM से कम
+    */
 
-    contactBox.style.display = "none";
+    else{
 
-    if (tripType === "oneway") {
+      contactRequired =
+        true;
 
-      document.getElementById("amountText").textContent =
-        distance.toFixed(1) +
+      baseFare = 0;
+
+    }
+
+  }
+
+
+  const night =
+    Number(
+      document.getElementById(
+        "night"
+      ).value || 0
+    );
+
+
+  const toll =
+    Number(
+      document.getElementById(
+        "toll"
+      ).value || 0
+    );
+
+
+  const parking =
+    Number(
+      document.getElementById(
+        "parking"
+      ).value || 0
+    );
+
+
+  const food =
+    Number(
+      document.getElementById(
+        "food"
+      ).value || 0
+    );
+
+
+  const total =
+    baseFare +
+    night +
+    toll +
+    parking +
+    food;
+
+
+  document.getElementById(
+    "baseFare"
+  ).textContent =
+    Math.round(
+      baseFare
+    ).toLocaleString(
+      "en-IN"
+    );
+
+
+  document.getElementById(
+    "nightShow"
+  ).textContent =
+    Math.round(
+      night
+    ).toLocaleString(
+      "en-IN"
+    );
+
+
+  document.getElementById(
+    "tollShow"
+  ).textContent =
+    Math.round(
+      toll
+    ).toLocaleString(
+      "en-IN"
+    );
+
+
+  document.getElementById(
+    "parkingShow"
+  ).textContent =
+    Math.round(
+      parking
+    ).toLocaleString(
+      "en-IN"
+    );
+
+
+  document.getElementById(
+    "foodShow"
+  ).textContent =
+    Math.round(
+      food
+    ).toLocaleString(
+      "en-IN"
+    );
+
+
+  document.getElementById(
+    "total"
+  ).textContent =
+    Math.round(
+      total
+    ).toLocaleString(
+      "en-IN"
+    );
+
+
+  const contact =
+    document.getElementById(
+      "contact"
+    );
+
+
+  if(contactRequired){
+
+    contact.style.display =
+      "block";
+
+
+    document.getElementById(
+      "fareMessage"
+    ).textContent =
+      "⚠️ Contact करके Fare Confirm करें";
+
+  }else{
+
+    contact.style.display =
+      "none";
+
+
+    if(
+      tripType === "oneway"
+    ){
+
+      document.getElementById(
+        "fareMessage"
+      ).textContent =
+        currentDistance.toFixed(1) +
         " KM × ₹22 + Extra Charges";
 
-    } else {
+    }else{
 
-      const bothDistance = distance * 2;
+      const totalDistance =
+        currentDistance * 2;
 
-      if (
-        bothDistance >= 150 &&
-        bothDistance <= 250
-      ) {
 
-        document.getElementById("amountText").textContent =
-          "Both Side " +
-          bothDistance.toFixed(1) +
+      if(
+        totalDistance >= 150 &&
+        totalDistance <= 250
+      ){
+
+        document.getElementById(
+          "fareMessage"
+        ).textContent =
+          totalDistance.toFixed(1) +
           " KM • ₹3,000 FIX + Extra Charges";
 
-      } else {
+      }else{
 
-        document.getElementById("amountText").textContent =
-          bothDistance.toFixed(1) +
+        document.getElementById(
+          "fareMessage"
+        ).textContent =
+          totalDistance.toFixed(1) +
           " KM × ₹12 + Extra Charges";
 
       }
+
     }
+
   }
+
 }
+
+
+/* =====================================================
+   EXTRA INPUT EVENTS
+===================================================== */
+
+[
+  "tripType",
+  "night",
+  "toll",
+  "parking",
+  "food"
+].forEach(
+  function(id){
+
+    document
+      .getElementById(id)
+      .addEventListener(
+        "input",
+        calculateFare
+      );
+
+    document
+      .getElementById(id)
+      .addEventListener(
+        "change",
+        calculateFare
+      );
+
+  }
+);
+
+
+/* =====================================================
+   BOOK NOW
+===================================================== */
+
+async function bookNow(){
+
+  const name =
+    document.getElementById(
+      "name"
+    ).value.trim();
+
+
+  const mobile =
+    document.getElementById(
+      "mobile"
+    ).value.trim();
+
+
+  if(!name){
+
+    alert(
+      "Customer Name डालें।"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !/^[0-9]{10}$/.test(
+      mobile
+    )
+  ){
+
+    alert(
+      "सही 10 अंकों का Mobile Number डालें।"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !fromPoint ||
+    !toPoint ||
+    !currentDistance
+  ){
+
+    alert(
+      "पहले Pickup और Drop location select करें।"
+    );
+
+    return;
+
+  }
+
+
+  const tripType =
+    document.getElementById(
+      "tripType"
+    ).value;
+
+
+  const night =
+    Number(
+      document.getElementById(
+        "night"
+      ).value || 0
+    );
+
+
+  const toll =
+    Number(
+      document.getElementById(
+        "toll"
+      ).value || 0
+    );
+
+
+  const parking =
+    Number(
+      document.getElementById(
+        "parking"
+      ).value || 0
+    );
+
+
+  const food =
+    Number(
+      document.getElementById(
+        "food"
+      ).value || 0
+    );
+
+
+  let baseFare = 0;
+  let contactRequired = false;
+
+
+  if(
+    tripType === "oneway"
+  ){
+
+    if(
+      currentDistance < 125
+    ){
+
+      contactRequired =
+        true;
+
+    }else{
+
+      baseFare =
+        currentDistance * 22;
+
+    }
+
+  }
+
+
+  if(
+    tripType === "round"
+  ){
+
+    const totalDistance =
+      currentDistance * 2;
+
+
+    if(
+      totalDistance >= 150 &&
+      totalDistance <= 250
+    ){
+
+      baseFare =
+        3000;
+
+    }else if(
+      totalDistance > 250
+    ){
+
+      baseFare =
+        totalDistance * 12;
+
+    }else{
+
+      contactRequired =
+        true;
+
+    }
+
+  }
+
+
+  const total =
+    contactRequired
+    ? 0
+    : Math.round(
+        baseFare +
+        night +
+        toll +
+        parking +
+        food
+      );
+
+
+  const booking = {
+
+    name:name,
+
+    mobile:mobile,
+
+    from:
+      document.getElementById(
+        "from"
+      ).value,
+
+    to:
+      document.getElementById(
+        "to"
+      ).value,
+
+    date:
+      document.getElementById(
+        "date"
+      ).value,
+
+    service:"Car Booking",
+
+    tripType:tripType,
+
+    fuel:
+      document.getElementById(
+        "fuel"
+      ).value,
+
+    car:
+      document.getElementById(
+        "car"
+      ).value,
+
+    passengers:
+      document.getElementById(
+        "passengers"
+      ).value,
+
+    distance:
+      currentDistance.toFixed(1),
+
+    travelTime:
+      currentTime,
+
+    routeNumber:
+      selectedRoute + 1,
+
+    rate:
+      tripType === "oneway"
+      ? 22
+      : 12,
+
+    baseFare:
+      Math.round(
+        baseFare
+      ),
+
+    nightCharge:
+      night,
+
+    toll:
+      toll,
+
+    parking:
+      parking,
+
+    food:
+      food,
+
+    totalAmount:
+      total,
+
+    amount:
+      total,
+
+    fareStatus:
+      contactRequired
+      ? "Contact & Confirm"
+      : "Confirmed Estimate",
+
+    message:
+      document.getElementById(
+        "message"
+      ).value.trim(),
+
+    fromLat:
+      fromPoint.lat,
+
+    fromLon:
+      fromPoint.lon,
+
+    toLat:
+      toPoint.lat,
+
+    toLon:
+      toPoint.lon
+
+  };
+
+
+  const result =
+    document.getElementById(
+      "result"
+    );
+
+
+  result.textContent =
+    "⏳ Booking save हो रही है...";
+
+
+  try{
+
+    const url =
+      API_URL +
+      "?action=create&data=" +
+      encodeURIComponent(
+        JSON.stringify(
+          booking
+        )
+      );
+
+
+    const response =
+      await fetch(
+        url
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      !data.success
+    ){
+
+      throw new Error(
+        data.message ||
+        "Booking failed"
+      );
+
+    }
+
+
+    const bookingId =
+      data.bookingId ||
+      data.id ||
+      (
+        "KDG-" +
+        Date.now()
+      );
+
+
+    result.textContent =
+      "✅ Booking Successfully Save हो गई।";
+
+
+    /* =====================================
+       RECEIPT
+    ===================================== */
+
+    const receipt =
+      document.getElementById(
+        "receipt"
+      );
+
+
+    receipt.href =
+      "receipt.html" +
+
+      "?id=" +
+      encodeURIComponent(
+        bookingId
+      ) +
+
+      "&name=" +
+      encodeURIComponent(
+        booking.name
+      ) +
+
+      "&mobile=" +
+      encodeURIComponent(
+        booking.mobile
+      ) +
+
+      "&service=" +
+      encodeURIComponent(
+        booking.service
+      ) +
+
+      "&from=" +
+      encodeURIComponent(
+        booking.from
+      ) +
+
+      "&to=" +
+      encodeURIComponent(
+        booking.to
+      ) +
+
+      "&date=" +
+      encodeURIComponent(
+        booking.date
+      ) +
+
+      "&tripType=" +
+      encodeURIComponent(
+        booking.tripType
+      ) +
+
+      "&fuel=" +
+      encodeURIComponent(
+        booking.fuel
+      ) +
+
+      "&distance=" +
+      encodeURIComponent(
+        booking.distance
+      ) +
+
+      "&travelTime=" +
+      encodeURIComponent(
+        booking.travelTime
+      ) +
+
+      "&routeNumber=" +
+      encodeURIComponent(
+        booking.routeNumber
+      ) +
+
+      "&rate=" +
+      encodeURIComponent(
+        booking.rate
+      ) +
+
+      "&baseFare=" +
+      encodeURIComponent(
+        booking.baseFare
+      ) +
+
+      "&nightCharge=" +
+      encodeURIComponent(
+        booking.nightCharge
+      ) +
+
+      "&toll=" +
+      encodeURIComponent(
+        booking.toll
+      ) +
+
+      "&parking=" +
+      encodeURIComponent(
+        booking.parking
+      ) +
+
+      "&food=" +
+      encodeURIComponent(
+        booking.food
+      ) +
+
+      "&amount=" +
+      encodeURIComponent(
+        booking.totalAmount
+      ) +
+
+      "&fareStatus=" +
+      encodeURIComponent(
+        booking.fareStatus
+      );
+
+
+    receipt.style.display =
+      "block";
+
+
+    /* =====================================
+       WHATSAPP
+    ===================================== */
+
+    const text =
+
+`KD GOLDEN TRAVELS BOOKING
+
+Booking ID: ${bookingId}
+
+Customer: ${booking.name}
+
+Mobile: ${booking.mobile}
+
+From: ${booking.from}
+
+To: ${booking.to}
+
+Trip: ${
+  tripType === "round"
+  ? "Both Side / Round Trip"
+  : "One Side"
+}
+
+Date: ${booking.date}
+
+Route: ${booking.routeNumber}
+
+Distance: ${booking.distance} KM
+
+Travel Time: ${booking.travelTime}
+
+Car: ${booking.car}
+
+Fuel: ${booking.fuel}
+
+Base Fare: ₹${booking.baseFare}
+
+Night: ₹${booking.nightCharge}
+
+Toll: ₹${booking.toll}
+
+Parking: ₹${booking.parking}
+
+Food: ₹${booking.food}
+
+Total: ${
+  contactRequired
+  ? "CONTACT & CONFIRM"
+  : "₹" +
+    booking.totalAmount.toLocaleString("en-IN")
+}
+
+KD GOLDEN TRAVELS
+📞 7222826299`;
+
+
+    window.open(
+      "https://wa.me/917222826299?text=" +
+      encodeURIComponent(
+        text
+      ),
+      "_blank"
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    result.textContent =
+      "❌ Booking save नहीं हुई: " +
+      error.message;
+
+  }
+
+}
+
+
+/* =====================================================
+   WHATSAPP ENQUIRY
+===================================================== */
+
+function sendWhatsApp(){
+
+  const from =
+    document.getElementById(
+      "from"
+    ).value.trim();
+
+
+  const to =
+    document.getElementById(
+      "to"
+    ).value.trim();
+
+
+  const name =
+    document.getElementById(
+      "name"
+    ).value.trim();
+
+
+  const mobile =
+    document.getElementById(
+      "mobile"
+    ).value.trim();
+
+
+  const text =
+
+`KD GOLDEN TRAVELS ENQUIRY
+
+Name: ${name}
+
+Mobile: ${mobile}
+
+From: ${from}
+
+To: ${to}
+
+Trip: ${
+  document.getElementById(
+    "tripType"
+  ).value === "round"
+  ? "Both Side"
+  : "One Side"
+}
+
+Distance: ${
+  currentDistance
+  ? currentDistance.toFixed(1) +
+    " KM"
+  : "Not calculated"
+}
+
+Please confirm fare.`;
+
+
+  window.open(
+    "https://wa.me/917222826299?text=" +
+    encodeURIComponent(
+      text
+    ),
+    "_blank"
+  );
+
+}
+
+</script>
+
+</body>
+</html>
